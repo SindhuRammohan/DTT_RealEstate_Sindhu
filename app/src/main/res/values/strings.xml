@@ -1,0 +1,15 @@
+<resources>
+
+    <string name="google_maps_key">AIzaSyDGzYqKTTyVrD6PKQ6bPhhVyNxulIJf-a4</string>
+    <string name="app_name">RealEstate_DTT_Sindhu</string>
+    <string name="about">ABOUT</string>
+    <string name="dad">Design and Development</string>
+    <string name="by_dtt">by DTT</string>
+    <string name="dtt_realestate">DTT REAL ESTATE</string>
+    <string name="search_for_home">Search for a home</string>
+    <string name="description">Description</string>
+    <string name="location">Location</string>
+    <string name="currency">$</string>
+    <string name="dtt_website"><a href="http://www.d-tt.nl">d-tt.nl</a></string>
+    <string name="about_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.</string>
+</resources>
