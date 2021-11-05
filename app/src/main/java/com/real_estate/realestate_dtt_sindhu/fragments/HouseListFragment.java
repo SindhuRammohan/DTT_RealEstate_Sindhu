@@ -5,17 +5,14 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,7 +33,6 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.real_estate.realestate_dtt_sindhu.DataModel;
 import com.real_estate.realestate_dtt_sindhu.GPSTracker;
 import com.real_estate.realestate_dtt_sindhu.R;
@@ -65,17 +61,14 @@ public class HouseListFragment extends Fragment {
     ArrayList<DataModel> dataModels;
     ListView listView;
     private static CustomAdapter adapter;
-
-
-
     private GoogleMap googleMap;
     private MapView mapView;
     private static final int LOCATION_REQUEST_CODE = 101;
 
 
-    ArrayList<String> ListViewClickItemArray = new ArrayList<String>();
+    ArrayList<String> ListViewClickItemArrayId = new ArrayList<String>();
     ArrayList<String> ListViewClickItemArrayprice = new ArrayList<String>();
-    ArrayList<String> ListViewClickItemArraypath = new ArrayList<String>();
+    ArrayList<String> ListViewClickItemArrayImagepath = new ArrayList<String>();
     ArrayList<String> ListViewClickItemArrayBedroom = new ArrayList<String>();
     ArrayList<String> ListViewClickItemArraybathrooms = new ArrayList<String>();
     ArrayList<String> ListViewClickItemArraysize = new ArrayList<String>();
@@ -109,7 +102,7 @@ public class HouseListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater , ViewGroup container ,
                              Bundle savedInstanceState) {
-        final View rootView = inflater.inflate(R.layout.fragment_tab1, container, false);
+        final View rootView = inflater.inflate(R.layout.houselist_tab, container, false);
         dataModels= new ArrayList<>();
 
         hideSoftKeyboard(getActivity());
@@ -125,7 +118,6 @@ public class HouseListFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int st, int b, int c)
             {
-                Log.i("App", "mGPS text change" + s );
                 String text = editText.getText().toString().toLowerCase(Locale.getDefault());
                 HouseListFragment.this.adapter.getFilter().filter(text);
             }
@@ -155,19 +147,12 @@ public class HouseListFragment extends Fragment {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-//                    performSearch();
                     String text = editText.getText().toString().toLowerCase(Locale.getDefault());
                     HouseListFragment.this.adapter.getFilter().filter(text);
-
-
-                    Log.i("App", "mGPS text" +text);
-
                     hideSoftKeyboard(getActivity());
                     editText.setText("");
                     return true;
                 }
-
-                Log.i("App", "mGPS text else" );
                 return false;
             }
         });
@@ -207,40 +192,16 @@ public class HouseListFragment extends Fragment {
 
                 if(mGPS.canGetLocation() ){
                     mGPS.getLocation();
-                    Log.i("App", "mGPS.getLatitude()" +mGPS.getLatitude());
-                    Log.i("App", "mGPS.getLatitude()" +mGPS.getLongitude());
-                    Log.i("App", "mGPS.getLatitude()" +mGPS.getLocation());
                 }else{
                     System.out.println("Unable");
                 }
                 //To add marker
-                LatLng sydney = new LatLng(mGPS.getLatitude(), mGPS.getLongitude());
+                LatLng currentLocation = new LatLng(mGPS.getLatitude(), mGPS.getLongitude());
 
-                Location locationA = new Location("point A");
-
-                locationA.setLatitude(mGPS.getLatitude());
-                locationA.setLongitude(mGPS.getLongitude());
-
-                Location locationB = new Location("point B");
-
-                locationB.setLatitude(52.401339525407664);
-                locationB.setLongitude(4.916404960509914);
-
-                double distance = distance(mGPS.getLatitude(),mGPS.getLongitude(),52.401339525407664,4.916404960509914);
-
-                Log.i("App", "mGPS.getLatitude() ding" +mGPS.getLatitude());
-                Log.i("App", "mGPS.getLatitude() ding" +mGPS.getLongitude());
-                Log.i("App", "mGPS.getLatitude() distance" +distance);
-
-                googleMap.addMarker(new MarkerOptions().position(sydney).title("Title").snippet("Marker Description"));
-                // For zooming functionality
-                CameraPosition cameraPosition = new CameraPosition.Builder().target(sydney).zoom(12).build();
+                CameraPosition cameraPosition = new CameraPosition.Builder().target(currentLocation).zoom(12).build();
                 googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
             }
         });
-
-
-
         return rootView;
         // Inflate the layout for this fragment
 
@@ -249,23 +210,12 @@ public class HouseListFragment extends Fragment {
     private ActivityResultLauncher<String> requestPermissionLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
                 if (isGranted) {
-                    Log.i("App", "kl" );
-
                     // Permission is granted. Continue the action or workflow in your
                     // app.
                 } else {
-                    Log.i("App", "kli" );
-                    // Explain to the user that the feature is unavailable because the
-                    // features requires a permission that the user has denied. At the
-                    // same time, respect the user's decision. Don't link to system
-                    // settings in an effort to convince the user to change their
-                    // decision.
-
-
                     getActivity().finish();
                     android.os.Process.killProcess(android.os.Process.myPid());
                     System.exit(1);
-
                 }
             });
 
@@ -290,16 +240,6 @@ public class HouseListFragment extends Fragment {
     private double rad2deg(double rad) {
         return (rad * 180.0 / Math.PI);
     }
-    protected void requestPermission(String permissionType, int
-            requestCode) {
-        int permission = ContextCompat.checkSelfPermission(getContext(),
-                permissionType);
-        if (permission != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(getActivity(),
-                    new String[]{permissionType}, requestCode
-            );
-        }
-    }
 
     private class FetchDataTask extends AsyncTask<String, Void, String> {
 
@@ -312,19 +252,12 @@ public class HouseListFragment extends Fragment {
             HttpGet httpGet = new HttpGet(params[0]);
             httpGet.setHeader("Access-Key","98bww4ezuzfePCYFxJEWyszbUXc7dxRx");
             try {
-
                 HttpResponse response = client.execute(httpGet);
-
-
-
-
                 inputStream = response.getEntity().getContent();
 
                 // convert inputstream to string
                 if(inputStream != null){
                     result = convertInputStreamToString(inputStream);
-                    Log.i("App", "Data received:" +result);
-
                 }
                 else
                     result = "Failed to fetch data";
@@ -366,7 +299,7 @@ public class HouseListFragment extends Fragment {
                 for(int i=0; i < jsonMainNode.length(); i++) {
                     JSONObject jsonChildNode = jsonMainNode.getJSONObject(i);
                     String id = jsonChildNode.getString("id");
-                    String postTitle = jsonChildNode.getString("price");
+                    String price = jsonChildNode.getString("price");
                     String address = jsonChildNode.getString("zip");
                     String city = jsonChildNode.getString("city");
                     String bed = jsonChildNode.getString("bedrooms");
@@ -382,15 +315,7 @@ public class HouseListFragment extends Fragment {
                     GPSTracker mGPS = new GPSTracker(getContext());
                     double distance = distance(mGPS.getLatitude(),mGPS.getLongitude(),Double.parseDouble(lat),Double.parseDouble(longi));
 
-                    Log.i("App", "mGPS.getLatitude() dingdong" +mGPS.getLatitude());
-                    Log.i("App", "mGPS.getLatitude() dingdong" +mGPS.getLongitude());
-                    Log.i("App", "mGPS.getLatitude() dingdong" +distance);
-
-                    ArrayList<DataModel> countryList = new ArrayList<DataModel>();
-
-
-
-                    dataModels.add(new DataModel(postTitle, address+city, bed,bath,size,imageURL+path,description,distance,lat,longi));
+                    dataModels.add(new DataModel(price, address+city, bed,bath,size,imageURL+path,description,distance,lat,longi));
 
                     Collections.sort(dataModels,new houseSortByPrice());
 
@@ -399,9 +324,9 @@ public class HouseListFragment extends Fragment {
                     TempHolder = jsonMainNode.optString(i);
 
                     //Adding selected item into Array List .
-                    ListViewClickItemArray.add(jsonChildNode.getString("id"));
+                    ListViewClickItemArrayId.add(jsonChildNode.getString("id"));
                     ListViewClickItemArrayprice.add(jsonChildNode.getString("price"));
-                    ListViewClickItemArraypath.add(jsonChildNode.getString("image"));
+                    ListViewClickItemArrayImagepath.add(jsonChildNode.getString("image"));
                     ListViewClickItemArrayBedroom.add(jsonChildNode.getString("bedrooms"));
                     ListViewClickItemArraybathrooms.add(jsonChildNode.getString("bathrooms"));
                     ListViewClickItemArraysize.add(jsonChildNode.getString("size"));
@@ -432,16 +357,7 @@ public class HouseListFragment extends Fragment {
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView adapterView, View view, int i, long l) {
-//                Toast.makeText(getApplicationContext(),fruitNames[i],Toast.LENGTH_LONG).show();
-//                        ListdataActivity selectedFragment = null;
-//                        selectedFragment = new ListdataActivity();
 
-
-
-                        DataModel newsData = (DataModel) listView.getItemAtPosition(i);
-
-
-                        String t  = (String) ((DataModel) listView.getItemAtPosition(i)).getZip();
                         String price  = (String) ((DataModel) listView.getItemAtPosition(i)).getPrice();
                         String img  = (String) ((DataModel) listView.getItemAtPosition(i)).getPicture_path();
                         String bed  = (String) ((DataModel) listView.getItemAtPosition(i)).getBedrooms();
@@ -454,7 +370,7 @@ public class HouseListFragment extends Fragment {
 
 
                         double dist = (double) ((DataModel) listView.getItemAtPosition(i)).getdistance();
-                        String stringDecimal = String.format("%.2f", dist);
+                        String distance = String.format("%.2f", dist);
 
 
 
@@ -466,42 +382,21 @@ public class HouseListFragment extends Fragment {
                         intent.putExtra("bath", bath);
                         intent.putExtra("size", size);
                         intent.putExtra("description", description);
-                        intent.putExtra("distance", stringDecimal);
+                        intent.putExtra("distance", distance);
 
                         intent.putExtra("lat", lat);
                         intent.putExtra("longi", longi);
 
 
-                        Log.i("App", "Data imgimg:"+imageURL+img );
-//                        selectedFragment .setArguments(args);
-
-
-//                        Intent intent = new Intent(getActivity(), newActivity.class);
-//
-//                        intent.putExtra("Key",t);
-//                        intent.putExtra("price",price);
-//                        intent.putExtra("selected_image", imageURL+img);
-//                        intent.putExtra("bed", bed);
-//                        intent.putExtra("bath", bath);
-//                        intent.putExtra("size", size);
-//                        intent.putExtra("description", description);
 
                         startActivity(intent);
                         getActivity().finish();
 
-//
-//                        getActivity().getSupportFragmentManager()
-//                                .beginTransaction()
-//                                .replace(R.id.fragment_container, selectedFragment)
-//                                .commit();
-
-                        Log.i("App", "Data hhhdsgs:" );
                     }
                 });
 
 
             }catch(Exception e){
-                Log.i("App", "Error parsing data" +e.getMessage());
 
             }
         }

@@ -21,7 +21,7 @@ public class CustomAdapter extends ArrayAdapter<DataModel> implements View.OnCli
 
     private FilterByAddress filter;
 
-    private String data;
+    private String pic_path;
 
     public ImageLoader imageLoader;
     // View lookup cache
@@ -100,9 +100,9 @@ public class CustomAdapter extends ArrayAdapter<DataModel> implements View.OnCli
 
         String stringDecimal = String.format("%.2f", dataModel.getdistance());
         viewHolder.txtdistance.setText(stringDecimal);
-        data = dataModel.getPicture_path();
+        pic_path = dataModel.getPicture_path();
         ImageView image = viewHolder.houseImage;
-        imageLoader.DisplayImage(data, image);
+        imageLoader.DisplayImage(pic_path, image);
         viewHolder.houseImage.setOnClickListener(this);
         viewHolder.houseImage.setTag(position);
         return convertView;

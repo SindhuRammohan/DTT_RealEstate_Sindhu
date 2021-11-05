@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/cds">
+    android:layout_height="match_parent">
 
     <!--Header aligned to top -->
     <LinearLayout
@@ -24,14 +23,12 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/vv"
         android:background="@drawable/search_box_style"
         android:orientation="horizontal">
 
 
 
         <EditText
-
             android:nextFocusUp="@id/search"
             android:nextFocusLeft="@id/search"
             android:id="@+id/search"
