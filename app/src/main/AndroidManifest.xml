@@ -34,7 +34,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".HouseOverview"
+            android:exported="true">
+        </activity>
+        <activity
+            android:name=".houseDetailScreen"
             android:exported="true">
         </activity>
     </application>

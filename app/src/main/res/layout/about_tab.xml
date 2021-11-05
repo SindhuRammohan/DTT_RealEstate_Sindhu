@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".AboutTabFragment">>
-
-    <LinearLayout
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
+        android:layout_marginTop="40dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical" >
 
         <TextView android:id="@+id/about"
@@ -19,14 +15,18 @@
             android:text="@string/about"/>
 
         <TextView
+            android:maxLines="15"
+            android:layout_marginTop="30dp"
             android:id="@+id/txtAbout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="@style/TextAppearance.AppCompat.input"
+            android:scrollbars = "vertical"
             android:text="@string/about_text" />
 
         <TextView
             android:id="@+id/dad"
+            android:layout_marginTop="30dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="@style/TextAppearance.AppCompat.title1"
@@ -37,16 +37,17 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             <ImageView
-                android:id="@+id/simpleImageView"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+                android:contentDescription="@string/app_name"
+                android:id="@+id/dttbanner"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:scaleType="centerInside"
                 android:adjustViewBounds="true"
-                android:layout_centerInParent="true"
                 android:src="@mipmap/dtt_banner" />
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="fill_parent"
+                android:layout_marginTop="30dp"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
                 android:orientation="vertical" >
 
@@ -59,11 +60,10 @@
                 <TextView
                     android:id="@+id/dtt_website"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColorLink="@color/blue"
                     android:textAppearance="@style/TextAppearance.AppCompat.hint"
                     android:text="@string/dtt_website" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
-
-</FrameLayout>

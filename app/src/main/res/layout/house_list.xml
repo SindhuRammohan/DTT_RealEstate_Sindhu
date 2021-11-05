@@ -54,7 +54,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/ic_bed"/>
         <TextView
-            android:id="@+id/no_of_beedroom"
+            android:id="@+id/no_of_bedroom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@android:color/black"

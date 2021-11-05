@@ -11,13 +11,13 @@ public class SplashActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.splashfile);
+        setContentView(R.layout.splash_screen);
 
         handler=new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent=new Intent(SplashActivity.this,MainActivity.class);
+                Intent intent=new Intent(SplashActivity.this, HouseOverview.class);
                 startActivity(intent);
                 finish();
             }

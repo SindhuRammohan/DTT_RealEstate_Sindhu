@@ -1,13 +1,13 @@
-package com.real_estate.realestate_dtt_sindhu;
+package com.real_estate.realestate_dtt_sindhu.fragments;
 
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
-
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.core.app.ActivityCompat;
@@ -25,6 +25,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -36,6 +37,12 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.real_estate.realestate_dtt_sindhu.DataModel;
+import com.real_estate.realestate_dtt_sindhu.GPSTracker;
+import com.real_estate.realestate_dtt_sindhu.R;
+import com.real_estate.realestate_dtt_sindhu.adapter.CustomAdapter;
+import com.real_estate.realestate_dtt_sindhu.houseSortByPrice;
+import com.real_estate.realestate_dtt_sindhu.houseDetailScreen;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -51,8 +58,9 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Locale;
 
-public class Tab1Fragment extends Fragment {
+public class HouseListFragment extends Fragment {
 
     ArrayList<DataModel> dataModels;
     ListView listView;
@@ -83,7 +91,7 @@ public class Tab1Fragment extends Fragment {
 
     private final static String imageURL = "https://intern.docker-dev.d-tt.nl";
 
-    public Tab1Fragment() {
+    public HouseListFragment() {
         // Required empty public constructor
     }
     public static void hideSoftKeyboard(Activity activity) {
@@ -107,6 +115,8 @@ public class Tab1Fragment extends Fragment {
         hideSoftKeyboard(getActivity());
         new FetchDataTask().execute(URL);
         listView = (ListView) rootView.findViewById(R.id.simpleListView);
+        LinearLayout emptyText = (LinearLayout)rootView.findViewById(R.id.emptyview);
+        listView.setEmptyView(emptyText);
         editText = (EditText) rootView.findViewById(R.id.search);
         search = (ImageView) rootView.findViewById(R.id.searchicon);
         close = (ImageView) rootView.findViewById(R.id.closeicon);
@@ -115,7 +125,9 @@ public class Tab1Fragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int st, int b, int c)
             {
-                adapter.getFilter().filter(s.toString());
+                Log.i("App", "mGPS text change" + s );
+                String text = editText.getText().toString().toLowerCase(Locale.getDefault());
+                HouseListFragment.this.adapter.getFilter().filter(text);
             }
 
             @Override
@@ -137,16 +149,25 @@ public class Tab1Fragment extends Fragment {
                 }
             }
         };
+
         editText.addTextChangedListener(textWatcher);
         editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
 //                    performSearch();
+                    String text = editText.getText().toString().toLowerCase(Locale.getDefault());
+                    HouseListFragment.this.adapter.getFilter().filter(text);
+
+
+                    Log.i("App", "mGPS text" +text);
+
                     hideSoftKeyboard(getActivity());
                     editText.setText("");
                     return true;
                 }
+
+                Log.i("App", "mGPS text else" );
                 return false;
             }
         });
@@ -184,7 +205,7 @@ public class Tab1Fragment extends Fragment {
                 requestPermissionLauncher.launch(
                             Manifest.permission.ACCESS_FINE_LOCATION);
 
-                if(mGPS.canGetLocation ){
+                if(mGPS.canGetLocation() ){
                     mGPS.getLocation();
                     Log.i("App", "mGPS.getLatitude()" +mGPS.getLatitude());
                     Log.i("App", "mGPS.getLatitude()" +mGPS.getLongitude());
@@ -239,6 +260,8 @@ public class Tab1Fragment extends Fragment {
                     // same time, respect the user's decision. Don't link to system
                     // settings in an effort to convince the user to change their
                     // decision.
+
+
                     getActivity().finish();
                     android.os.Process.killProcess(android.os.Process.myPid());
                     System.exit(1);
@@ -350,11 +373,26 @@ public class Tab1Fragment extends Fragment {
                     String bath = jsonChildNode.getString("bathrooms");
                     String size = jsonChildNode.getString("size");
                     String path = jsonChildNode.getString("image");
+                    String description = jsonChildNode.getString("description");
 
 
-                    dataModels.add(new DataModel(postTitle, address+city, bed,bath,size,imageURL+path));
+                    String lat = jsonChildNode.getString("latitude");
+                    String longi = jsonChildNode.getString("longitude");
 
-                    Collections.sort(dataModels,new NameSorter());
+                    GPSTracker mGPS = new GPSTracker(getContext());
+                    double distance = distance(mGPS.getLatitude(),mGPS.getLongitude(),Double.parseDouble(lat),Double.parseDouble(longi));
+
+                    Log.i("App", "mGPS.getLatitude() dingdong" +mGPS.getLatitude());
+                    Log.i("App", "mGPS.getLatitude() dingdong" +mGPS.getLongitude());
+                    Log.i("App", "mGPS.getLatitude() dingdong" +distance);
+
+                    ArrayList<DataModel> countryList = new ArrayList<DataModel>();
+
+
+
+                    dataModels.add(new DataModel(postTitle, address+city, bed,bath,size,imageURL+path,description,distance,lat,longi));
+
+                    Collections.sort(dataModels,new houseSortByPrice());
 
 
                     //Getting json Array item into String.
@@ -395,36 +433,67 @@ public class Tab1Fragment extends Fragment {
                     @Override
                     public void onItemClick(AdapterView adapterView, View view, int i, long l) {
 //                Toast.makeText(getApplicationContext(),fruitNames[i],Toast.LENGTH_LONG).show();
-                        ListdataActivity selectedFragment = null;
-                        selectedFragment = new ListdataActivity();
+//                        ListdataActivity selectedFragment = null;
+//                        selectedFragment = new ListdataActivity();
 
 
-                        String t  = ListViewClickItemArray.get(i).toString();
-                        String price  = ListViewClickItemArrayprice.get(i).toString();
-                        String img  = ListViewClickItemArraypath.get(i).toString();
-                        String bed  = ListViewClickItemArrayBedroom.get(i).toString();
-                        String bath  = ListViewClickItemArraybathrooms.get(i).toString();
-                        String size  = ListViewClickItemArraysize.get(i).toString();
-                        String description  = ListViewClickItemArraydescription.get(i).toString();
+
+                        DataModel newsData = (DataModel) listView.getItemAtPosition(i);
 
 
-                        Bundle args = new Bundle();
-                        args.putString("Key",t);
-                        args.putString("price",price);
-                        args.putString("selected_image", imageURL+img);
-                        args.putString("bed", bed);
-                        args.putString("bath", bath);
-                        args.putString("size", size);
-                        args.putString("description", description);
+                        String t  = (String) ((DataModel) listView.getItemAtPosition(i)).getZip();
+                        String price  = (String) ((DataModel) listView.getItemAtPosition(i)).getPrice();
+                        String img  = (String) ((DataModel) listView.getItemAtPosition(i)).getPicture_path();
+                        String bed  = (String) ((DataModel) listView.getItemAtPosition(i)).getBedrooms();
+                        String bath  = (String) ((DataModel) listView.getItemAtPosition(i)).getBathroom();
+                        String size  =(String) ((DataModel) listView.getItemAtPosition(i)).getSizes();
+                        String description  = (String) ((DataModel) listView.getItemAtPosition(i)).getDescription();
+
+                        String lat  =(String) ((DataModel) listView.getItemAtPosition(i)).getLat();
+                        String longi  = (String) ((DataModel) listView.getItemAtPosition(i)).getLongi();
+
+
+                        double dist = (double) ((DataModel) listView.getItemAtPosition(i)).getdistance();
+                        String stringDecimal = String.format("%.2f", dist);
+
+
+
+                        Intent intent = new Intent(getActivity(), houseDetailScreen.class);
+
+                        intent.putExtra("price",price);
+                        intent.putExtra("selected_image", img);
+                        intent.putExtra("bed", bed);
+                        intent.putExtra("bath", bath);
+                        intent.putExtra("size", size);
+                        intent.putExtra("description", description);
+                        intent.putExtra("distance", stringDecimal);
+
+                        intent.putExtra("lat", lat);
+                        intent.putExtra("longi", longi);
+
 
                         Log.i("App", "Data imgimg:"+imageURL+img );
-                        selectedFragment .setArguments(args);
+//                        selectedFragment .setArguments(args);
 
 
-                        getActivity().getSupportFragmentManager()
-                                .beginTransaction()
-                                .replace(R.id.fragment_container, selectedFragment)
-                                .commit();
+//                        Intent intent = new Intent(getActivity(), newActivity.class);
+//
+//                        intent.putExtra("Key",t);
+//                        intent.putExtra("price",price);
+//                        intent.putExtra("selected_image", imageURL+img);
+//                        intent.putExtra("bed", bed);
+//                        intent.putExtra("bath", bath);
+//                        intent.putExtra("size", size);
+//                        intent.putExtra("description", description);
+
+                        startActivity(intent);
+                        getActivity().finish();
+
+//
+//                        getActivity().getSupportFragmentManager()
+//                                .beginTransaction()
+//                                .replace(R.id.fragment_container, selectedFragment)
+//                                .commit();
 
                         Log.i("App", "Data hhhdsgs:" );
                     }

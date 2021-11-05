@@ -14,13 +14,10 @@ import java.util.Map;
 import java.util.WeakHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-
 import android.os.Handler;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Log;
 import android.widget.ImageView;
 
 public class ImageLoader {
@@ -49,12 +46,11 @@ public class ImageLoader {
     }
 
     // default image show in list (Before online image download)
-    final int stub_id=R.drawable.ic_back;
+    final int stub_id=R.drawable.ic_dtt;
 
     public void DisplayImage(String url, ImageView imageView)
     {
 
-        Log.i("App", "Data ss:" +url);
         //Store image and url in Map
         imageViews.put(imageView, url);
 
@@ -228,7 +224,6 @@ public class ImageLoader {
     boolean imageViewReused(PhotoToLoad photoToLoad){
 
         String tag=imageViews.get(photoToLoad.imageView);
-        //Check url is already exist in imageViews MAP
         if(tag==null || !tag.equals(photoToLoad.url))
             return true;
         return false;
@@ -252,11 +247,4 @@ public class ImageLoader {
                 photoToLoad.imageView.setImageResource(stub_id);
         }
     }
-
-    public void clearCache() {
-        //Clear cache directory downloaded images and stored data in maps
-        memoryCache.clear();
-        fileCache.clear();
-    }
-
 }
