@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+
 import android.text.method.LinkMovementMethod;
 import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
@@ -25,7 +27,7 @@ public class AboutTabFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.about_tab, container, false);
-        websitelink = (TextView) rootView.findViewById(R.id.dtt_website);
+        websitelink = rootView.findViewById(R.id.dtt_website);
         websitelink.setMovementMethod(new ScrollingMovementMethod());
         setupHyperlink();
 
@@ -38,12 +40,19 @@ public class AboutTabFragment extends Fragment {
                 }
             }
         };
-        requireActivity().getOnBackPressedDispatcher().addCallback(getActivity(), callback);
+
+        requireActivity().getOnBackPressedDispatcher().addCallback(getActivityNonNull(), callback);
         return rootView;
     }
 
     private void setupHyperlink() {
         websitelink.setMovementMethod(LinkMovementMethod.getInstance());
     }
-
+    protected FragmentActivity getActivityNonNull() {
+        if (super.getActivity() != null) {
+            return super.getActivity();
+        } else {
+            throw new RuntimeException("null returned from getActivity()");
+        }
+    }
 }

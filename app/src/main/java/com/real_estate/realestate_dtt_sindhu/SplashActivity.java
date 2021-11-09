@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 
 public class SplashActivity extends Activity {
@@ -21,26 +22,25 @@ public class SplashActivity extends Activity {
     }
 
     private void permissioncheck() {
-         ActivityCompat.requestPermissions(this,
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
                     1);
-
-
+        } else{
+            LaunchApp();
+        }
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
-        switch (requestCode) {
-            case 1: {
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    LaunchApp();
-                } else {
-                    finish();
-                    finishAffinity();
-                }
-                return;
+        if (requestCode == 1) {
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                LaunchApp();
+            } else {
+                finish();
+                finishAffinity();
             }
         }
     }

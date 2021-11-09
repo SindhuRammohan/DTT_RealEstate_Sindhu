@@ -9,21 +9,19 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.real_estate.realestate_dtt_sindhu.DataModel;
 import com.real_estate.realestate_dtt_sindhu.R;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class CustomAdapter extends ArrayAdapter<DataModel> implements View.OnClickListener, Filterable {
-    private ArrayList<DataModel> originalHouseList;
+    private final ArrayList<DataModel> originalHouseList;
     private ArrayList<DataModel> afterSearchHouseList;
     Context mContext;
 
     private FilterByAddress filter;
-
-    private String pic_path;
 
     private static class ViewHolder {
         TextView txtPrice;
@@ -37,13 +35,10 @@ public class CustomAdapter extends ArrayAdapter<DataModel> implements View.OnCli
 
     public CustomAdapter(ArrayList<DataModel> countryList, Context context) {
         super(context, R.layout.house_list, countryList);
-
-        this.afterSearchHouseList = new ArrayList<DataModel>();
+        this.afterSearchHouseList = new ArrayList<>();
         this.afterSearchHouseList.addAll(countryList);
-        this.originalHouseList = new ArrayList<DataModel>();
+        this.originalHouseList = new ArrayList<>();
         this.originalHouseList.addAll(countryList);
-
-
         this.mContext=context;
     }
     @Override
@@ -58,48 +53,44 @@ public class CustomAdapter extends ArrayAdapter<DataModel> implements View.OnCli
 
     }
 
-    private int lastPosition = -1;
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // Get the data item for this position
         DataModel dataModel = getItem(position);
-        // Check if an existing view is being reused, otherwise inflate the view
-        ViewHolder viewHolder; // view lookup cache stored in tag
-
-        final View result;
+        ViewHolder viewHolder;
 
         if (convertView == null) {
 
             viewHolder = new ViewHolder();
             LayoutInflater inflater = LayoutInflater.from(getContext());
             convertView = inflater.inflate(R.layout.house_list, parent, false);
-            viewHolder.txtPrice = (TextView) convertView.findViewById(R.id.price);
-            viewHolder.txtLocation = (TextView) convertView.findViewById(R.id.location);
-            viewHolder.txtBedroom = (TextView) convertView.findViewById(R.id.no_of_bedroom);
-            viewHolder.txtbath = (TextView) convertView.findViewById(R.id.bathroom);
-            viewHolder.txtsize = (TextView) convertView.findViewById(R.id.layers);
-            viewHolder.houseImage = (ImageView) convertView.findViewById(R.id.house_image);
-            viewHolder.txtdistance = (TextView) convertView.findViewById(R.id.distance);
-            result=convertView;
+            viewHolder.txtPrice = convertView.findViewById(R.id.price);
+            viewHolder.txtLocation = convertView.findViewById(R.id.location);
+            viewHolder.txtBedroom = convertView.findViewById(R.id.no_of_bedroom);
+            viewHolder.txtbath = convertView.findViewById(R.id.bathroom);
+            viewHolder.txtsize = convertView.findViewById(R.id.layers);
+            viewHolder.houseImage = convertView.findViewById(R.id.house_image);
+            viewHolder.txtdistance = convertView.findViewById(R.id.distance);
 
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
-            result=convertView;
         }
 
-        lastPosition = position;
+        viewHolder.txtPrice.setText(convertView.getResources().getString(R.string.currency,dataModel.getPrice()));
 
-        viewHolder.txtPrice.setText(convertView.getResources().getString(R.string.currency) + dataModel.getPrice());
-        viewHolder.txtLocation.setText(dataModel.getZip());
+        StringBuilder address =new StringBuilder(dataModel.getZip());
+        address .append(" ");
+        address .append(dataModel.getCity());
+
+        viewHolder.txtLocation.setText(address);
         viewHolder.txtBedroom.setText(dataModel.getBedrooms());
         viewHolder.txtbath.setText(dataModel.getBathroom());
         viewHolder.txtsize.setText(dataModel.getSizes());
 
-        String stringDecimal = String.format("%.2f", dataModel.getdistance());
+        String stringDecimal = String.format(Locale.US,"%.2f", dataModel.getdistance());
         viewHolder.txtdistance.setText(stringDecimal);
-        pic_path = dataModel.getPicture_path();
+        String pic_path = dataModel.getPicture_path();
         ImageView image = viewHolder.houseImage;
 
 
@@ -124,14 +115,14 @@ public class CustomAdapter extends ArrayAdapter<DataModel> implements View.OnCli
         protected FilterResults performFiltering(CharSequence constraint) {
             constraint = constraint.toString().toLowerCase();
             FilterResults result = new FilterResults();
-            if(constraint != null && constraint.toString().length() > 0)
+            if( constraint.toString().length() > 0)
             {
-                ArrayList<DataModel> filteredItems = new ArrayList<DataModel>();
+                ArrayList<DataModel> filteredItems = new ArrayList<>();
                 for(int i = 0, l = originalHouseList.size(); i < l; i++)
                 {
-                    DataModel country = originalHouseList.get(i);
-                    if(country.getZip().toLowerCase().replaceAll("\\s+","").contains(constraint)) {
-                        filteredItems.add(country);
+                    DataModel house = originalHouseList.get(i);
+                    if(house.getZip().toLowerCase().replaceAll("\\s+","").contains(constraint)) {
+                        filteredItems.add(house);
                     }
                 }
                 result.count = filteredItems.size();
@@ -160,7 +151,4 @@ public class CustomAdapter extends ArrayAdapter<DataModel> implements View.OnCli
             notifyDataSetInvalidated();
         }
     }
-
-
-
 }

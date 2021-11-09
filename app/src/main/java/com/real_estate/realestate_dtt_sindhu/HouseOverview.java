@@ -33,7 +33,7 @@ public class HouseOverview extends AppCompatActivity {
 
 
 
-    private BottomNavigationView.OnItemSelectedListener navListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
+    private final BottomNavigationView.OnItemSelectedListener navListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             Fragment selectedFragment = null;
@@ -46,6 +46,7 @@ public class HouseOverview extends AppCompatActivity {
                     break;
             }
 
+            assert selectedFragment != null;
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.fragment_container, selectedFragment)

@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import com.bumptech.glide.Glide;
@@ -23,24 +25,24 @@ public class HouseDetailScreen extends AppCompatActivity {
 
 
     private GoogleMap googleMap;
-    private MapView mapView;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         try
         {
-            this.getSupportActionBar().hide();
+            this.getActionBar().hide();
         }
-        catch (NullPointerException e){}
+        catch (NullPointerException ignored){}
         setContentView(R.layout.detail_house);
-        TextView textView = (TextView)findViewById(R.id.pricedetail);
-        TextView no_of_beedroom = (TextView)findViewById(R.id.bedroomdetail);
-        TextView bathroom = (TextView)findViewById(R.id.batroomdetail);
-        TextView layersnew = (TextView)findViewById(R.id.layerdetail);
-        TextView descriptionn = (TextView)findViewById(R.id.description);
-        TextView distance = (TextView)findViewById(R.id.distancedetail);
-        ImageView houseImageView = (ImageView)findViewById(R.id.houseimagedetail);
-        ImageView back = (ImageView)findViewById(R.id.back);
+        TextView textView = findViewById(R.id.pricedetail);
+        TextView no_of_bedroom = findViewById(R.id.bedroomdetail);
+        TextView bathroom = findViewById(R.id.batroomdetail);
+        TextView layers = findViewById(R.id.layerdetail);
+        TextView description = findViewById(R.id.description);
+        TextView distance = findViewById(R.id.distancedetail);
+        ImageView houseImageView = findViewById(R.id.houseimagedetail);
+        ImageView back = findViewById(R.id.back);
 
 
         Intent i = getIntent();
@@ -50,7 +52,7 @@ public class HouseDetailScreen extends AppCompatActivity {
         String bed = i.getStringExtra("bed");
         String bath = i.getStringExtra("bath");
         String size = i.getStringExtra("size");
-        String description = i.getStringExtra("description");
+        String descriptions = i.getStringExtra("description");
         String dist = i.getStringExtra("distance");
         String lat = i.getStringExtra("lat");
         String longi = i.getStringExtra("longi");
@@ -64,15 +66,15 @@ public class HouseDetailScreen extends AppCompatActivity {
 
 
 
-        textView.setText(getResources().getString(R.string.currency) + price);
-        no_of_beedroom.setText(bed);
+        textView.setText(getResources().getString(R.string.currency,price) );
+        no_of_bedroom.setText(bed);
         bathroom.setText(bath);
-        layersnew.setText(size);
-        descriptionn.setText(description);
+        layers.setText(size);
+        description.setText(descriptions);
         distance.setText(dist);
 
 
-        mapView = (MapView) findViewById(R.id.map);
+        MapView mapView = findViewById(R.id.map);
         GPSTracker mGPS = new GPSTracker(this);
         mapView.onCreate(savedInstanceState);
         mapView.onResume();
@@ -85,7 +87,7 @@ public class HouseDetailScreen extends AppCompatActivity {
 
         mapView.getMapAsync(new OnMapReadyCallback() {
             @Override
-            public void onMapReady(GoogleMap mMap) {
+            public void onMapReady(@NonNull GoogleMap mMap) {
                 googleMap = mMap;
                 googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
                 googleMap.getUiSettings().setZoomControlsEnabled(false);
@@ -112,7 +114,7 @@ public class HouseDetailScreen extends AppCompatActivity {
                 googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
 
                     @Override
-                    public void onMapClick(LatLng arg0) {
+                    public void onMapClick(@NonNull LatLng arg0) {
 
 
                         String mapurlfrom = getResources().getString(R.string.mapurlfrom);

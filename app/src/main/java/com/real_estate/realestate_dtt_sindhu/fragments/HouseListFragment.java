@@ -5,7 +5,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
@@ -32,6 +35,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -40,7 +45,7 @@ public class HouseListFragment extends Fragment {
 
     ArrayList<DataModel> dataModels;
     ListView listView;
-    private static CustomAdapter adapter;
+    private CustomAdapter adapter;
 
     EditText editText;
     ImageView search;
@@ -70,17 +75,17 @@ public class HouseListFragment extends Fragment {
         final View rootView = inflater.inflate(R.layout.houselist_tab, container, false);
         dataModels= new ArrayList<>();
 
-        hideSoftKeyboard(getActivity());
+        hideSoftKeyboard(getActivityNonNull());
 
         Call<List<DataModel>> call = RetrofitClient.getInstance().getMyApi().getHouseList();
         String imageurl = Api.BASE_URL;
         call.enqueue(new Callback<List<DataModel>>() {
             @Override
-            public void onResponse(Call<List<DataModel>> call, Response<List<DataModel>> response) {
+            public void onResponse(@NonNull Call<List<DataModel>> call, @NonNull Response<List<DataModel>> response) {
 
                 List<DataModel> houseList = response.body();
 
-                for (int i = 0; i < houseList.size(); i++) {
+                for (int i = 0; i < Objects.requireNonNull(houseList).size(); i++) {
                     GPSTracker mGPS = new GPSTracker(getContext());
                     double distance = distance(mGPS.getLatitude(),mGPS.getLongitude(),Double.parseDouble(houseList.get(i).getLat()),Double.parseDouble(houseList.get(i).getLongi()));
                     houseList.get(i).setdistance(distance);
@@ -88,6 +93,7 @@ public class HouseListFragment extends Fragment {
                     dataModels.add(new DataModel(
                             houseList.get(i).getPrice(),
                             houseList.get(i).getZip(),
+                            houseList.get(i).getCity(),
                             houseList.get(i).getBedrooms(),
                             houseList.get(i).getBathroom(),
                             houseList.get(i).getSizes(),
@@ -108,36 +114,36 @@ public class HouseListFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<List<DataModel>> call, Throwable t) {
+            public void onFailure(@NonNull Call<List<DataModel>> call, @NonNull Throwable t) {
                 //handle error or failure cases here
             }
         });
 
 
-        listView = (ListView) rootView.findViewById(R.id.simpleListView);
-        LinearLayout emptyText = (LinearLayout)rootView.findViewById(R.id.emptyview);
+        listView = rootView.findViewById(R.id.simpleListView);
+        LinearLayout emptyText = rootView.findViewById(R.id.emptyview);
         listView.setEmptyView(emptyText);
-        editText = (EditText) rootView.findViewById(R.id.search);
-        search = (ImageView) rootView.findViewById(R.id.searchicon);
-        close = (ImageView) rootView.findViewById(R.id.closeicon);
+        editText = rootView.findViewById(R.id.search);
+        search = rootView.findViewById(R.id.searchicon);
+        close = rootView.findViewById(R.id.closeicon);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView adapterView, View view, int i, long l) {
 
-                String price  = (String) ((DataModel) listView.getItemAtPosition(i)).getPrice();
-                String img  = (String) ((DataModel) listView.getItemAtPosition(i)).getPicture_path();
-                String bed  = (String) ((DataModel) listView.getItemAtPosition(i)).getBedrooms();
-                String bath  = (String) ((DataModel) listView.getItemAtPosition(i)).getBathroom();
-                String size  =(String) ((DataModel) listView.getItemAtPosition(i)).getSizes();
-                String description  = (String) ((DataModel) listView.getItemAtPosition(i)).getDescription();
+                String price  = ((DataModel) listView.getItemAtPosition(i)).getPrice();
+                String img  = ((DataModel) listView.getItemAtPosition(i)).getPicture_path();
+                String bed  = ((DataModel) listView.getItemAtPosition(i)).getBedrooms();
+                String bath  = ((DataModel) listView.getItemAtPosition(i)).getBathroom();
+                String size  = ((DataModel) listView.getItemAtPosition(i)).getSizes();
+                String description  = ((DataModel) listView.getItemAtPosition(i)).getDescription();
 
-                String lat  =(String) ((DataModel) listView.getItemAtPosition(i)).getLat();
-                String longi  = (String) ((DataModel) listView.getItemAtPosition(i)).getLongi();
+                String lat  = ((DataModel) listView.getItemAtPosition(i)).getLat();
+                String longi  = ((DataModel) listView.getItemAtPosition(i)).getLongi();
 
 
-                double dist = (double) ((DataModel) listView.getItemAtPosition(i)).getdistance();
-                String distance = String.format("%.2f", dist);
+                double dist = ((DataModel) listView.getItemAtPosition(i)).getdistance();
+                String distance = String.format(Locale.US,"%.2f", dist);
 
 
 
@@ -154,7 +160,7 @@ public class HouseListFragment extends Fragment {
                 intent.putExtra("longi", longi);
 
                 startActivity(intent);
-                getActivity().finish();
+                getActivityNonNull().finish();
 
             }
         });
@@ -166,7 +172,7 @@ public class HouseListFragment extends Fragment {
             {
                 String text = editText.getText().toString().toLowerCase(Locale.getDefault());
                 if(adapter!=null) {
-                    HouseListFragment.this.adapter.getFilter().filter(text);
+                    adapter.getFilter().filter(text);
                 }
             }
 
@@ -197,9 +203,9 @@ public class HouseListFragment extends Fragment {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     String text = editText.getText().toString().toLowerCase(Locale.getDefault());
                     if(adapter!=null) {
-                        HouseListFragment.this.adapter.getFilter().filter(text);
+                        adapter.getFilter().filter(text);
                     }
-                    hideSoftKeyboard(getActivity());
+                    hideSoftKeyboard(getActivityNonNull());
                     editText.setText("");
                     return true;
                 }
@@ -223,7 +229,7 @@ public class HouseListFragment extends Fragment {
                 }
             }
         };
-        requireActivity().getOnBackPressedDispatcher().addCallback(getActivity(), callback);
+        requireActivity().getOnBackPressedDispatcher().addCallback(getActivityNonNull(), callback);
         return rootView;
 
     }
@@ -246,5 +252,11 @@ public class HouseListFragment extends Fragment {
     private double rad2deg(double rad) {
         return (rad * 180.0 / Math.PI);
     }
-
+    protected FragmentActivity getActivityNonNull() {
+        if (super.getActivity() != null) {
+            return super.getActivity();
+        } else {
+            throw new RuntimeException("null returned from getActivity()");
+        }
+    }
 }
