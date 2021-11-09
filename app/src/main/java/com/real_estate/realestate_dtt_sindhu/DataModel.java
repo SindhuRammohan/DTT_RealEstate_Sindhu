@@ -1,19 +1,29 @@
 package com.real_estate.realestate_dtt_sindhu;
-
+import com.google.gson.annotations.SerializedName;
 public class DataModel {
-
+    @SerializedName("price")
     String price;
+    @SerializedName("zip")
     String zip;
+    @SerializedName("city")
+    String city;
+    @SerializedName("bedrooms")
     String bedrooms;
+    @SerializedName("bathrooms")
     String bathrooms;
+    @SerializedName("size")
     String sizes;
+    @SerializedName("image")
     String pic_path;
+    @SerializedName("latitude")
     String lat;
+    @SerializedName("longitude")
     String longi;
-
+    @SerializedName("description")
+    String description;
 
     double distance;
-    String description;
+
     public DataModel(String price, String zip, String bedrooms, String bathrooms,String size,String pic_path ,String description,double distance,String lat ,String longi) {
         this.price=price;
         this.zip=zip;
@@ -41,6 +51,9 @@ public class DataModel {
         return longi;
     }
 
+    public void setdistance(double d) {
+        this.distance = d;
+    }
     public double getdistance() {
         return distance;
     }
@@ -48,7 +61,7 @@ public class DataModel {
         return description;
     }
     public String getZip() {
-        return zip;
+        return zip+city;
     }
 
     public String getBedrooms() {

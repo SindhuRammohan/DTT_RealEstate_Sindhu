@@ -1,103 +1,125 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@color/light_gray"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!--Header aligned to top -->
-    <LinearLayout
-        android:focusableInTouchMode="true"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/header"
-        android:gravity="center">
-
-        <TextView
-            android:id="@+id/header_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat.title1"
-            android:text="@string/dtt_realestate" />
-
-    </LinearLayout>
 
     <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/search_box_style"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:layout_margin="20dp">
 
-
-
-        <EditText
-            android:nextFocusUp="@id/search"
-            android:nextFocusLeft="@id/search"
-            android:id="@+id/search"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:hint="@string/search_for_home"
-            android:imeOptions="actionSearch"
-            android:inputType="text"
-            android:padding="8dp"
-            android:layout_weight="1"
-            android:background="#00ffffff"
-            android:gravity="center_vertical" />
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/searchicon"
-            android:padding="8dp"
-            android:src="@drawable/ic_search" />
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/closeicon"
-            android:padding="8dp"
-            android:visibility="gone"
-            android:src="@drawable/ic_close" />
-    </LinearLayout>
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:scrollbars="vertical"
-        android:id="@+id/scrollableContents">
-
-        <ListView
-            android:id="@+id/simpleListView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:divider="@color/material_blue_grey_800"
-            android:dividerHeight="1dp"
-            android:footerDividersEnabled="false" />
+        <!--Header aligned to top -->
         <LinearLayout
-            android:id="@+id/emptyview"
-            android:layout_width="wrap_content"
+            android:focusableInTouchMode="true"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <ImageView
-                android:id="@+id/simpleImageView"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:scaleType="centerInside"
-                android:adjustViewBounds="true"
-                android:layout_centerInParent="true"
-                android:src="@mipmap/search_state_empty" />
+            android:id="@+id/header"
+            android:gravity="center">
+
             <TextView
-                android:id="@+id/empty"
+                android:id="@+id/header_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/TextAppearance.AppCompat.title1"
-                android:text="@string/nosearch" />
+                android:text="@string/dtt_realestate" />
 
         </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="10"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/search_box_style"
+            android:orientation="horizontal">
+
+
+            <EditText
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="8"
+                android:layout_margin="10dp"
+                android:nextFocusUp="@id/search"
+                android:nextFocusLeft="@id/search"
+                android:id="@+id/search"
+                android:background="@color/dark_gray"
+                android:singleLine="true"
+                android:hint="@string/search_for_home"
+                android:imeOptions="actionSearch"
+                android:inputType="text"
+                android:padding="8dp"
+                android:gravity="center_vertical" />
+
+
+            <ImageView
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:id="@+id/searchicon"
+                android:background="@color/dark_gray"
+                android:padding="8dp"
+                android:layout_margin="10dp"
+                android:src="@drawable/ic_search"/>
+            <ImageView
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:layout_margin="10dp"
+                android:visibility="gone"
+                android:id="@+id/closeicon"
+                android:background="@color/dark_gray"
+                android:padding="8dp"
+                android:src="@drawable/ic_close"/>
+        </LinearLayout>
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:scrollbars="vertical"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="50dp"
+            android:id="@+id/scrollableContents">
+
+            <ListView
+                android:id="@+id/simpleListView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:divider="@android:color/transparent"
+                android:dividerHeight="10.0sp"
+                android:scrollbars="none"
+                android:footerDividersEnabled="false" />
+            <LinearLayout
+                android:id="@+id/emptyview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical">
+                <ImageView
+                    android:id="@+id/simpleImageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleType="centerCrop"
+                    android:layout_marginRight="40dp"
+                    android:layout_marginLeft="40dp"
+                    android:layout_gravity="center_vertical|center_horizontal"
+                    android:adjustViewBounds="true"
+                    android:src="@mipmap/search_state_empty" />
+                <TextView
+                    android:id="@+id/empty"
+                    android:gravity="center"
+                    android:layout_marginTop="30dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.AppCompat.input"
+                    android:text="@string/nosearch" />
+
+            </LinearLayout>
 
 
 
-    </RelativeLayout>
-
-    <com.google.android.gms.maps.MapView
-        android:id="@+id/mapf"
-        android:layout_width="500dp"
-        android:layout_height="500dp"
-        android:layout_weight="1"/>
-</LinearLayout>
+        </RelativeLayout>
+    </LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

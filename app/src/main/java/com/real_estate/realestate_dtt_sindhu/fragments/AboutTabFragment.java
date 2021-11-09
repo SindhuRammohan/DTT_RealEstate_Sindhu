@@ -1,5 +1,6 @@
 package com.real_estate.realestate_dtt_sindhu.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.real_estate.realestate_dtt_sindhu.HouseOverview;
 import com.real_estate.realestate_dtt_sindhu.R;
 
 public class AboutTabFragment extends Fragment {
@@ -30,9 +32,10 @@ public class AboutTabFragment extends Fragment {
         OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
             @Override
             public void handleOnBackPressed() {
-                getActivity().finish();
-                android.os.Process.killProcess(android.os.Process.myPid());
-                System.exit(1);
+                if(getActivity()!=null) {
+                    Intent intent = new Intent(getActivity().getApplication(), HouseOverview.class);
+                    startActivity(intent);
+                }
             }
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(getActivity(), callback);

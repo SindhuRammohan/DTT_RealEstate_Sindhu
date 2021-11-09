@@ -38,7 +38,7 @@
             android:exported="true">
         </activity>
         <activity
-            android:name=".houseDetailScreen"
+            android:name=".HouseDetailScreen"
             android:exported="true">
         </activity>
     </application>

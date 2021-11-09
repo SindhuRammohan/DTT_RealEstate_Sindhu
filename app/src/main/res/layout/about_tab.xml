@@ -1,69 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:padding="20dp"
+    android:background="@color/light_gray"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+<ScrollView
+    android:id="@+id/scrollView1"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentRight="true"
+    android:fillViewport="true"
+    android:layout_marginBottom="30dp"
+    android:layout_below="@+id/step2_header" >
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_marginTop="40dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
         android:layout_height="wrap_content"
-        android:orientation="vertical" >
-
-        <TextView android:id="@+id/about"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat.title1"
-            android:text="@string/about"/>
+        android:padding="10dp">
 
         <TextView
-            android:maxLines="15"
-            android:layout_marginTop="30dp"
-            android:id="@+id/txtAbout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat.input"
-            android:scrollbars = "vertical"
-            android:text="@string/about_text" />
-
-        <TextView
-            android:id="@+id/dad"
-            android:layout_marginTop="30dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat.title1"
-            android:text="@string/dad"/>
-
-        <LinearLayout
+            android:id="@+id/about"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <ImageView
-                android:contentDescription="@string/app_name"
-                android:id="@+id/dttbanner"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:scaleType="centerInside"
-                android:adjustViewBounds="true"
-                android:src="@mipmap/dtt_banner" />
-            <LinearLayout
-                android:layout_marginTop="30dp"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:orientation="vertical" >
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:gravity="left"
+            android:textAppearance="@style/TextAppearance.AppCompat.title1"
+            android:text="@string/about" />
 
-                <TextView android:id="@+id/byDtt"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="@style/TextAppearance.AppCompat.subtitle"
-                    android:text="@string/by_dtt"/>
+        <TextView
+            android:id="@+id/txtAbout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/about"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="10dp"
+            android:text="@string/about_text"
+            android:textAppearance="@style/TextAppearance.AppCompat.input" />
 
-                <TextView
-                    android:id="@+id/dtt_website"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColorLink="@color/blue"
-                    android:textAppearance="@style/TextAppearance.AppCompat.hint"
-                    android:text="@string/dtt_website" />
-            </LinearLayout>
-        </LinearLayout>
-    </LinearLayout>
+        <TextView
+
+            android:id="@+id/dad"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/txtAbout"
+            android:textAppearance="@style/TextAppearance.AppCompat.title1"
+            android:text="@string/dad" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dad" >
+        <ImageView
+            android:id="@+id/dttbanner"
+            android:layout_marginBottom="10dp"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:scaleType="centerInside"
+            android:adjustViewBounds="true"
+            android:src="@mipmap/dtt_banner"/>
+        <TextView
+            android:id="@+id/byDtt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/dttbanner"
+            android:layout_marginTop="50dp"
+            android:layout_marginLeft="30dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.subtitle"
+            android:text="@string/by_dtt"
+          />
+        <TextView
+            android:id="@+id/dtt_website"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/byDtt"
+            android:layout_toRightOf="@+id/dttbanner"
+            android:layout_marginLeft="30dp"
+            android:layout_marginBottom="10dp"
+            android:textColorLink="@color/blue"
+            android:textAppearance="@style/TextAppearance.AppCompat.hint"
+            android:text="@string/dtt_website" />
+
+
+</RelativeLayout>
+    </RelativeLayout>
+
+</ScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

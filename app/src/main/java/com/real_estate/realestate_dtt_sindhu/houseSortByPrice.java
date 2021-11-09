@@ -2,7 +2,7 @@ package com.real_estate.realestate_dtt_sindhu;
 
 import java.util.Comparator;
 
-public class houseSortByPrice implements Comparator<DataModel>
+public class HouseSortByPrice implements Comparator<DataModel>
 {
     @Override
     public int compare(DataModel price1, DataModel price2) {

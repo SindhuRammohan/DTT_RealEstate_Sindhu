@@ -9,8 +9,10 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.real_estate.realestate_dtt_sindhu.DataModel;
-import com.real_estate.realestate_dtt_sindhu.ImageLoader;
 import com.real_estate.realestate_dtt_sindhu.R;
 import java.util.ArrayList;
 
@@ -23,8 +25,6 @@ public class CustomAdapter extends ArrayAdapter<DataModel> implements View.OnCli
 
     private String pic_path;
 
-    public ImageLoader imageLoader;
-    // View lookup cache
     private static class ViewHolder {
         TextView txtPrice;
         TextView txtLocation;
@@ -45,7 +45,6 @@ public class CustomAdapter extends ArrayAdapter<DataModel> implements View.OnCli
 
 
         this.mContext=context;
-        imageLoader = new ImageLoader(context);
     }
     @Override
     public Filter getFilter() {
@@ -102,7 +101,16 @@ public class CustomAdapter extends ArrayAdapter<DataModel> implements View.OnCli
         viewHolder.txtdistance.setText(stringDecimal);
         pic_path = dataModel.getPicture_path();
         ImageView image = viewHolder.houseImage;
-        imageLoader.DisplayImage(pic_path, image);
+
+
+        RequestOptions options = new RequestOptions()
+                .centerCrop()
+                .placeholder(R.mipmap.dtt_banner)
+                .error(R.mipmap.dtt_banner);
+        Glide.with(getContext()).load(pic_path).apply(options).into(image);
+
+
+
         viewHolder.houseImage.setOnClickListener(this);
         viewHolder.houseImage.setTag(position);
         return convertView;
