@@ -1,6 +1,8 @@
 package com.real_estate.realestate_dtt_sindhu;
 
 import com.google.gson.annotations.SerializedName;
+
+
 public class DataModel {
     @SerializedName("price")
     String price;
@@ -23,8 +25,9 @@ public class DataModel {
     @SerializedName("description")
     String description;
 
-    double distance;
-    public DataModel(String price, String zip,String city, String bedrooms, String bathrooms,String size,String pic_path ,String description,double distance,String lat ,String longi) {
+
+
+    public DataModel(String price, String zip,String city, String bedrooms, String bathrooms,String size,String pic_path ,String description,String lat ,String longi) {
         this.price=price;
         this.zip=zip;
         this.city=city;
@@ -33,11 +36,9 @@ public class DataModel {
         this.sizes=size;
         this.pic_path=pic_path;
         this.description=description;
-        this.distance=distance;
         this.lat=lat;
         this.longi=longi;
     }
-
     public String getPrice() {
         return price;
     }
@@ -53,12 +54,6 @@ public class DataModel {
         return longi;
     }
 
-    public void setdistance(double d) {
-        this.distance = d;
-    }
-    public double getdistance() {
-        return distance;
-    }
     public String getDescription() {
         return description;
     }

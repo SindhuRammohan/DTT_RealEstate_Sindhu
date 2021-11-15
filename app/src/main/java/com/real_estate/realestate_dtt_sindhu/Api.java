@@ -1,8 +1,7 @@
 package com.real_estate.realestate_dtt_sindhu;
 
 
-import java.util.List;
-
+import java.util.ArrayList;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
@@ -13,5 +12,5 @@ public interface Api {
 
     @Headers({"Access-Key: 98bww4ezuzfePCYFxJEWyszbUXc7dxRx"})
     @GET("/api/house")
-    Call<List<DataModel>> getHouseList();
+    Call<ArrayList<DataModel>> getHouseList();
 }

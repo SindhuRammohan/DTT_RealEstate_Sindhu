@@ -1,126 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:background="@color/light_gray"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/container"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/light_gray"
+    android:paddingTop="40dp"
+    android:paddingStart="20dp"
+    android:paddingEnd="20dp">
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/header_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/container"
+        app:layout_constraintTop_toTopOf="parent"
+        android:textAppearance="@style/TextAppearance.AppCompat.title1"
+        android:text="@string/dtt_realestate" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/container"
+        app:layout_constraintTop_toBottomOf="@+id/header_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp"
+        android:padding="12dp"
+        android:nextFocusUp="@id/search"
+        android:nextFocusLeft="@id/search"
+        android:id="@+id/search"
+        android:background="@drawable/search_box_style"
+        android:singleLine="true"
+        android:hint="@string/search_for_home"
+        android:imeOptions="actionSearch"
+        android:inputType="text"
+        android:gravity="center_vertical"
+        android:autofillHints="@string/search_for_home" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/searchicon"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:background="@color/dark_gray"
+        android:padding="12dp"
+        android:layout_marginLeft="-50dp"
+        android:src="@drawable/ic_search"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/search"
+        app:layout_constraintTop_toBottomOf="@+id/header_title"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/search"
+        app:layout_constraintTop_toBottomOf="@+id/header_title"
+        app:layout_constraintVertical_bias="0.0"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:padding="12dp"
+        android:layout_marginLeft="-50dp"
+        android:id="@+id/closeicon"
+        android:background="@color/dark_gray"
+        android:src="@drawable/ic_close"/>
+    <androidx.core.widget.ContentLoadingProgressBar
+        android:id="@+id/progress_bar"
+        style="?android:progressBarStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/container"
+        app:layout_constraintTop_toBottomOf="@+id/search"
+        />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/simpleListView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingBottom="180dp"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/container"
+        app:layout_constraintTop_toBottomOf="@+id/search"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="10.0sp"
+        android:scrollbars="none"
+        android:footerDividersEnabled="false" />
 
 
-    <LinearLayout
-        android:orientation="vertical"
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/emptyview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="20dp">
-
-        <!--Header aligned to top -->
-        <LinearLayout
-            android:focusableInTouchMode="true"
+        android:gravity="center"
+        android:orientation="vertical">
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/simpleImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            android:layout_marginRight="40dp"
+            android:layout_marginLeft="40dp"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:adjustViewBounds="true"
+            android:src="@mipmap/search_state_empty" />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/empty"
+            android:gravity="center"
+            android:layout_marginTop="30dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/header"
-            android:gravity="center">
+            android:textAppearance="@style/TextAppearance.AppCompat.subtitle"
+            android:text="@string/nosearch" />
 
-            <TextView
-                android:id="@+id/header_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="@style/TextAppearance.AppCompat.title1"
-                android:text="@string/dtt_realestate" />
-
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="10"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/search_box_style"
-            android:orientation="horizontal">
-
-
-            <EditText
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="8"
-                android:layout_margin="10dp"
-                android:nextFocusUp="@id/search"
-                android:nextFocusLeft="@id/search"
-                android:id="@+id/search"
-                android:background="@color/dark_gray"
-                android:singleLine="true"
-                android:hint="@string/search_for_home"
-                android:imeOptions="actionSearch"
-                android:inputType="text"
-                android:padding="8dp"
-                android:gravity="center_vertical"
-                android:autofillHints="@string/search_for_home" />
-
-
-            <ImageView
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:id="@+id/searchicon"
-                android:background="@color/dark_gray"
-                android:padding="8dp"
-                android:layout_margin="10dp"
-                android:src="@drawable/ic_search"/>
-            <ImageView
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:layout_margin="10dp"
-                android:visibility="gone"
-                android:id="@+id/closeicon"
-                android:background="@color/dark_gray"
-                android:padding="8dp"
-                android:src="@drawable/ic_close"/>
-        </LinearLayout>
-        <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:scrollbars="vertical"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="50dp"
-            android:id="@+id/scrollableContents">
-
-            <ListView
-                android:id="@+id/simpleListView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:divider="@android:color/transparent"
-                android:dividerHeight="10.0sp"
-                android:scrollbars="none"
-                android:footerDividersEnabled="false" />
-            <LinearLayout
-                android:id="@+id/emptyview"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:orientation="vertical">
-                <ImageView
-                    android:id="@+id/simpleImageView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:scaleType="centerCrop"
-                    android:layout_marginRight="40dp"
-                    android:layout_marginLeft="40dp"
-                    android:layout_gravity="center_vertical|center_horizontal"
-                    android:adjustViewBounds="true"
-                    android:src="@mipmap/search_state_empty" />
-                <TextView
-                    android:id="@+id/empty"
-                    android:gravity="center"
-                    android:layout_marginTop="30dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="@style/TextAppearance.AppCompat.subtitle"
-                    android:text="@string/nosearch" />
-
-            </LinearLayout>
-
-
-
-        </RelativeLayout>
-    </LinearLayout>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</androidx.constraintlayout.widget.ConstraintLayout>
