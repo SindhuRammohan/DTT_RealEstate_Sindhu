@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/container"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     android:background="@color/light_gray"
-    android:paddingStart="10dp"
-    android:paddingEnd="10dp">
-
-
+    android:paddingBottom="100dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/light_gray"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp">
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/about"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:paddingLeft="15dp"
         android:paddingBottom="30dp"
         android:paddingTop="30dp"
@@ -28,7 +32,7 @@
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/txtAbout"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:paddingLeft="15dp"
         android:paddingBottom="30dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -42,7 +46,7 @@
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/dad"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:paddingLeft="15dp"
         android:paddingBottom="10dp"
         android:gravity="center_vertical"
@@ -70,7 +74,7 @@
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/byDtt"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_marginTop="15dp"
         android:layout_marginBottom="18dp"
         android:layout_marginStart="18dp"
@@ -82,7 +86,7 @@
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/dtt_website"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_marginStart="18dp"
         app:layout_constraintStart_toEndOf="@+id/avatar"
         app:layout_constraintTop_toBottomOf="@+id/byDtt"
@@ -92,3 +96,4 @@
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>

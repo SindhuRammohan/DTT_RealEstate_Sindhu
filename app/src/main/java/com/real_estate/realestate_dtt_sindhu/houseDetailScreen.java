@@ -5,6 +5,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -29,11 +30,8 @@ public class HouseDetailScreen extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        try
-        {
-            this.getActionBar().hide();
-        }
-        catch (NullPointerException ignored){}
+        requestWindowFeature(Window.FEATURE_NO_TITLE); //will hide the title
+        getSupportActionBar().hide(); // hide the title bar
         setContentView(R.layout.detail_house);
         TextView textView = findViewById(R.id.pricedetail);
         TextView no_of_bedroom = findViewById(R.id.bedroomdetail);

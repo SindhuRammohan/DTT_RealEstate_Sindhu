@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/light_gray"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<androidx.constraintlayout.widget.ConstraintLayout
     android:id="@+id/container"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="8dp"
-    android:paddingStart="10dp"
-    android:paddingEnd="10dp">
-
-
+    android:layout_height="wrap_content">
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/houseimagedetail"
         android:layout_width="0dp"
@@ -37,6 +35,9 @@
         android:id="@+id/pricedetail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
         app:layout_constraintStart_toStartOf="@+id/container"
         app:layout_constraintTop_toBottomOf="@+id/houseimagedetail"
         android:textAppearance="@style/TextAppearance.AppCompat.title2"/>
@@ -45,6 +46,10 @@
         android:id="@+id/bedroomimage"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="50dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
         app:layout_constraintStart_toEndOf="@+id/pricedetail"
         app:layout_constraintTop_toBottomOf="@+id/houseimagedetail"
         android:background="@drawable/ic_bed"/>
@@ -52,8 +57,9 @@
         android:id="@+id/bedroomdetail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_marginLeft="5dp"
+        android:layout_marginTop="35dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
         app:layout_constraintStart_toEndOf="@+id/bedroomimage"
         app:layout_constraintTop_toBottomOf="@+id/houseimagedetail"
         android:textAppearance="@style/TextAppearance.AppCompat.subtitle" />
@@ -61,6 +67,9 @@
         android:id="@+id/bathroomimage"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
         app:layout_constraintStart_toEndOf="@+id/bedroomdetail"
         app:layout_constraintTop_toBottomOf="@+id/houseimagedetail"
         android:background="@drawable/ic_bath"/>
@@ -70,7 +79,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_marginLeft="5dp"
+        android:layout_marginTop="35dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
         app:layout_constraintStart_toEndOf="@+id/bathroomimage"
         app:layout_constraintTop_toBottomOf="@+id/houseimagedetail"
         android:textAppearance="@style/TextAppearance.AppCompat.subtitle"/>
@@ -78,6 +89,9 @@
         android:id="@+id/layerimage"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
         android:background="@drawable/ic_layers"
         app:layout_constraintStart_toEndOf="@+id/batroomdetail"
         app:layout_constraintTop_toBottomOf="@+id/houseimagedetail"/>
@@ -86,7 +100,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_marginLeft="5dp"
+        android:layout_marginTop="35dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
         app:layout_constraintStart_toEndOf="@+id/layerimage"
         app:layout_constraintTop_toBottomOf="@+id/houseimagedetail"
         android:textAppearance="@style/TextAppearance.AppCompat.subtitle"/>
@@ -94,6 +110,9 @@
         android:id="@+id/distanceimage"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:layout_marginTop="30dp"
         app:layout_constraintStart_toEndOf="@+id/layerdetail"
         app:layout_constraintTop_toBottomOf="@+id/houseimagedetail"
         android:background="@drawable/ic_location"/>
@@ -102,15 +121,19 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_marginLeft="5dp"
+        android:layout_marginTop="35dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
         app:layout_constraintStart_toEndOf="@+id/distanceimage"
         app:layout_constraintTop_toBottomOf="@+id/houseimagedetail"
         android:textAppearance="@style/TextAppearance.AppCompat.subtitle"/>
     <androidx.appcompat.widget.AppCompatTextView
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="15dp"
         android:id="@+id/descriptiontext"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/container"
         app:layout_constraintTop_toBottomOf="@+id/pricedetail"
@@ -121,6 +144,8 @@
         android:id="@+id/description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
         app:layout_constraintStart_toStartOf="@+id/container"
         app:layout_constraintTop_toBottomOf="@+id/descriptiontext"
         android:textAppearance="@style/TextAppearance.AppCompat.detail"/>
@@ -130,14 +155,21 @@
         android:layout_marginBottom="15dp"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
         app:layout_constraintStart_toStartOf="@+id/container"
         app:layout_constraintTop_toBottomOf="@+id/description"
         android:textAppearance="@style/TextAppearance.AppCompat.title1"
         android:text="@string/location" />
     <com.google.android.gms.maps.MapView
         android:id="@+id/map"
+        android:layout_marginTop="10dp"
+        android:paddingBottom="15dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
         app:layout_constraintStart_toStartOf="@+id/container"
         app:layout_constraintTop_toBottomOf="@+id/location"
         android:layout_width="match_parent"
-        android:layout_height="0dp"/>
+        android:layout_height="200dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
