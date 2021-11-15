@@ -1,4 +1,6 @@
-package com.real_estate.realestate_dtt_sindhu;
+package com.real_estate.realestate_dtt_sindhu.services;
+
+import com.real_estate.realestate_dtt_sindhu.model.DataModel;
 
 import java.util.Comparator;
 

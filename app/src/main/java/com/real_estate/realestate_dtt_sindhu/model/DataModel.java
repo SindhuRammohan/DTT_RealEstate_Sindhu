@@ -1,4 +1,4 @@
-package com.real_estate.realestate_dtt_sindhu;
+package com.real_estate.realestate_dtt_sindhu.model;
 
 import com.google.gson.annotations.SerializedName;
 

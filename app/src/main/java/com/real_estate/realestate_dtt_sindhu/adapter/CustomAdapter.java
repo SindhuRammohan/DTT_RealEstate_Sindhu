@@ -14,68 +14,65 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.real_estate.realestate_dtt_sindhu.DataModel;
-import com.real_estate.realestate_dtt_sindhu.GPSTracker;
+import com.real_estate.realestate_dtt_sindhu.model.DataModel;
+import com.real_estate.realestate_dtt_sindhu.services.GPSTracker;
 import com.real_estate.realestate_dtt_sindhu.R;
 
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class CustomAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements  Filterable {
+public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.RecyclerViewViewHolder> implements  Filterable {
 
     private ArrayList<DataModel> afterSearchHouseList;
     Context mContext;
     ArrayList<DataModel> originalHouseList;
     private FilterByAddress filter;
     private ItemClickListener mClickListener;
-    private int c;
 
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View rootView = LayoutInflater.from(mContext).inflate(R.layout.house_list,parent,false);
+    public RecyclerViewViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View rootView = LayoutInflater.from(parent.getContext()).inflate(R.layout.house_list,parent,false);
+        this.mContext = parent.getContext();
         return new RecyclerViewViewHolder(rootView);
 
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerViewViewHolder holder, int position) {
 
         DataModel dataModel = originalHouseList.get(position);
-        RecyclerViewViewHolder viewHolder= (RecyclerViewViewHolder) holder;
         holder.setIsRecyclable(false);
-
-
         StringBuilder address =new StringBuilder(dataModel.getZip());
         address .append(" ");
         address .append(dataModel.getCity());
 
 
-        viewHolder.txtPrice.setText(dataModel.getPrice());
-        viewHolder.txtLocation.setText(address);
-        viewHolder.txtBedroom.setText(dataModel.getBedrooms());
-        viewHolder.txtbath.setText(dataModel.getBathroom());
-        viewHolder.txtsize.setText(dataModel.getSizes());
+        holder.txtPrice.setText(dataModel.getPrice());
+        holder.txtLocation.setText(address);
+        holder.txtBedroom.setText(dataModel.getBedrooms());
+        holder.txtbath.setText(dataModel.getBathroom());
+        holder.txtsize.setText(dataModel.getSizes());
 
 
         GPSTracker mGPS = new GPSTracker(mContext);
         double distance = distance(mGPS.getLatitude(), mGPS.getLongitude(), Double.parseDouble(dataModel.getLat()), Double.parseDouble(dataModel.getLongi()));
         String distanceStringDecimal = String.format(Locale.US,"%.2f", distance);
-        viewHolder.txtdistance.setText(distanceStringDecimal);
+        holder.txtdistance.setText(distanceStringDecimal);
 
 
 
         String pic_path = dataModel.getPicture_path();
-        ImageView image = viewHolder.houseImage;
+        ImageView image = holder.houseImage;
 
 
         RequestOptions options = new RequestOptions()
                 .centerCrop()
                 .placeholder(R.mipmap.dtt_banner)
                 .error(R.mipmap.dtt_banner);
-        Glide.with(mContext).load(pic_path).apply(options).into(image);
-        
-
+        if(mContext != null) {
+            Glide.with(mContext).load(pic_path).apply(options).into(image);
+        }
     }
 
 
@@ -103,8 +100,25 @@ public class CustomAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     @Override
     public int getItemCount() {
-        return originalHouseList.size();
+
+        if (originalHouseList != null) {
+            return originalHouseList.size();
+        } else {
+            return 0;
+        }
+
     }
+
+    public void setHouseList(ArrayList<DataModel> houseList) {
+        this.originalHouseList = houseList;
+        notifyDataSetChanged();
+
+        this.afterSearchHouseList = new ArrayList<>();
+        this.afterSearchHouseList.addAll(originalHouseList);
+        this.afterSearchHouseList = originalHouseList;
+        
+    }
+
 
     public DataModel getItem(int id) {
         return originalHouseList.get(id);
@@ -128,13 +142,13 @@ public class CustomAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
         RecyclerViewViewHolder(@NonNull View itemView) {
             super(itemView);
-                txtPrice = itemView.findViewById(R.id.price);
-                txtLocation = itemView.findViewById(R.id.location);
-                txtBedroom = itemView.findViewById(R.id.no_of_bedroom);
-                txtbath = itemView.findViewById(R.id.bathroom);
-                txtsize = itemView.findViewById(R.id.layers);
-                houseImage = itemView.findViewById(R.id.house_image);
-                txtdistance = itemView.findViewById(R.id.distance);
+            txtPrice = itemView.findViewById(R.id.price);
+            txtLocation = itemView.findViewById(R.id.location);
+            txtBedroom = itemView.findViewById(R.id.no_of_bedroom);
+            txtbath = itemView.findViewById(R.id.bathroom);
+            txtsize = itemView.findViewById(R.id.layers);
+            houseImage = itemView.findViewById(R.id.house_image);
+            txtdistance = itemView.findViewById(R.id.distance);
 
             itemView.setOnClickListener(this);
 
@@ -157,16 +171,6 @@ public class CustomAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
 
-    public CustomAdapter(ArrayList<DataModel> HouseList, Context context) {
-
-        this.afterSearchHouseList = new ArrayList<>();
-        this.afterSearchHouseList.addAll(HouseList);
-        this.afterSearchHouseList = HouseList;
-        this.originalHouseList = new ArrayList<>();
-        this.originalHouseList.addAll(HouseList);
-        this.originalHouseList = HouseList;
-        this.mContext=context;
-    }
     private class FilterByAddress extends Filter
     {
 
@@ -190,12 +194,12 @@ public class CustomAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
 
 
-    @SuppressWarnings("unchecked")
-    @Override
-    protected void publishResults(CharSequence constraint,
-                                  FilterResults results) {
-        originalHouseList = (ArrayList<DataModel>)results.values;
-        notifyDataSetChanged();
+        @SuppressWarnings("unchecked")
+        @Override
+        protected void publishResults(CharSequence constraint,
+                                      FilterResults results) {
+            originalHouseList = (ArrayList<DataModel>)results.values;
+            notifyDataSetChanged();
+        }
     }
-}
 }

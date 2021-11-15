@@ -1,7 +1,6 @@
 package com.real_estate.realestate_dtt_sindhu.fragments;
 
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -10,10 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.widget.LinearLayoutCompat;
@@ -22,20 +19,20 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import com.real_estate.realestate_dtt_sindhu.DataModel;
-import com.real_estate.realestate_dtt_sindhu.GPSTracker;
+import com.real_estate.realestate_dtt_sindhu.model.DataModel;
+import com.real_estate.realestate_dtt_sindhu.services.GPSTracker;
 import com.real_estate.realestate_dtt_sindhu.HouseDetailScreen;
-import com.real_estate.realestate_dtt_sindhu.HouseViewModel;
+import com.real_estate.realestate_dtt_sindhu.model.HouseViewModel;
 import com.real_estate.realestate_dtt_sindhu.R;
 import com.real_estate.realestate_dtt_sindhu.adapter.CustomAdapter;
+import com.real_estate.realestate_dtt_sindhu.services.RecyclerViewEmptySupport;
 
 import java.util.ArrayList;
 import java.util.Locale;
 
 public class HouseListFragment extends Fragment implements CustomAdapter.ItemClickListener{
     View rootView;
-    RecyclerView listView;
+    RecyclerViewEmptySupport listView;
     LinearLayoutCompat emptyText;
     EditText editText;
     ImageView search;
@@ -54,19 +51,20 @@ public class HouseListFragment extends Fragment implements CustomAdapter.ItemCli
 
         requireActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
-
-
-
-        viewModel = ViewModelProviders.of(getActivityNonNull()).get(HouseViewModel.class);
-        viewModel.getUserMutableLiveData().observe(getActivityNonNull(), userListUpdateObserver);
-
-
-
         listView = rootView.findViewById(R.id.simpleListView);
         emptyText = rootView.findViewById(R.id.emptyview);
 
+        listView.setLayoutManager(new LinearLayoutManager(getContext()));
+        listView.setHasFixedSize(true);
+        listView.setEmptyView(emptyText);
 
 
+        viewModel = ViewModelProviders.of(getActivityNonNull()).get(HouseViewModel.class);
+
+        adapter = new CustomAdapter();
+        listView.setAdapter(adapter);
+
+        viewModel.getUserMutableLiveData().observe(getActivityNonNull(), userListUpdateObserver);
 
         editText = rootView.findViewById(R.id.search);
         search = rootView.findViewById(R.id.searchicon);
@@ -130,15 +128,9 @@ public class HouseListFragment extends Fragment implements CustomAdapter.ItemCli
     Observer<ArrayList<DataModel>> userListUpdateObserver = new Observer<ArrayList<DataModel>>() {
         @Override
         public void onChanged(ArrayList<DataModel> userArrayList) {
-            adapter = new CustomAdapter(userArrayList, getActivityNonNull());
-            listView =  rootView.findViewById(R.id.simpleListView);
-            ProgressBar mProgressBar =  rootView.findViewById(R.id.progress_bar);
-            mProgressBar.setVisibility(View.GONE);
-            listView.setLayoutManager(new LinearLayoutManager(getActivityNonNull()));
+            adapter.setHouseList(userArrayList);
+            adapter.notifyDataSetChanged();
             adapter.setClickListener(HouseListFragment.this);
-            listView.setAdapter(adapter);
-
-            emptyText = rootView.findViewById(R.id.emptyview);
 
 
         }

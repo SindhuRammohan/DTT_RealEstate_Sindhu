@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/light_gray"
+    android:paddingBottom="100dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/light_gray"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/about"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:paddingLeft="15dp"
+        android:paddingBottom="30dp"
+        android:paddingTop="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/container"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="@string/about"
+        android:textAppearance="@style/TextAppearance.AppCompat.title1"/>
+
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/txtAbout"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:paddingLeft="15dp"
+        android:paddingBottom="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/container"
+        app:layout_constraintTop_toBottomOf="@+id/about"
+        android:text="@string/about_text"
+        android:textAppearance="@style/TextAppearance.AppCompat.input" />
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/dad"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:paddingLeft="15dp"
+        android:paddingBottom="10dp"
+        android:gravity="center_vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/container"
+        app:layout_constraintTop_toBottomOf="@+id/txtAbout"
+        android:text="@string/dad"
+        android:textAppearance="@style/TextAppearance.AppCompat.title1"/>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/avatar"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="3dp"
+        android:layout_width="100dp"
+        android:layout_height="60dp"
+        android:scaleType="centerInside"
+        android:adjustViewBounds="true"
+        android:src="@mipmap/dtt_banner"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/container"
+        app:layout_constraintStart_toStartOf="@+id/container"
+        app:layout_constraintTop_toBottomOf="@+id/dad"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/byDtt"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="18dp"
+        android:layout_marginStart="18dp"
+        app:layout_constraintStart_toEndOf="@+id/avatar"
+        app:layout_constraintTop_toBottomOf="@+id/dad"
+        android:textAppearance="@style/TextAppearance.AppCompat.subtitle"
+        android:text="@string/by_dtt" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/dtt_website"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginStart="18dp"
+        app:layout_constraintStart_toEndOf="@+id/avatar"
+        app:layout_constraintTop_toBottomOf="@+id/byDtt"
+        android:textColorLink="@color/blue"
+        android:textAppearance="@style/TextAppearance.AppCompat.hint"
+        android:text="@string/dtt_website"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
