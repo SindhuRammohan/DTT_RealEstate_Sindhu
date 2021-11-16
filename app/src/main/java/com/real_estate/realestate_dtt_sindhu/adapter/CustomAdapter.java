@@ -1,7 +1,6 @@
 package com.real_estate.realestate_dtt_sindhu.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -111,8 +110,6 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.RecyclerVi
     public void setHouseList(ArrayList<HouseDataModel> houseList) {
         this.originalHouseList = houseList;
         notifyDataSetChanged();
-        Log.e("houseList",""+houseList.size());
-
         this.afterSearchHouseList = new ArrayList<>();
         this.afterSearchHouseList = originalHouseList;
 

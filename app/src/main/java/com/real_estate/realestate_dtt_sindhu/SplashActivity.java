@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -26,13 +28,6 @@ import com.google.android.gms.location.LocationServices;
 public class SplashActivity extends Activity {
 
     Handler handler;
-    private final LocationCallback mLocationCallback = new LocationCallback() {
-
-        @Override
-        public void onLocationResult(@NonNull LocationResult locationResult) {
-            LaunchApp();
-        }
-    };
     FusedLocationProviderClient mFusedLocationClient;
     int PERMISSION_ID = 44;
 
@@ -127,7 +122,13 @@ public class SplashActivity extends Activity {
             }
         }
     }
+    private final LocationCallback mLocationCallback = new LocationCallback() {
 
+        @Override
+        public void onLocationResult(@NonNull LocationResult locationResult) {
+            LaunchApp();
+        }
+    };
     @Override
     public void onResume() {
         super.onResume();
@@ -135,7 +136,11 @@ public class SplashActivity extends Activity {
             getLastLocation();
         }
     }
-
+    private void checkInternet() {
+        ConnectivityManager cm = (ConnectivityManager)getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo nInfo = cm.getActiveNetworkInfo();
+        boolean connected = nInfo != null && nInfo.isAvailable() && nInfo.isConnected();
+    }
     private void CloseApp() {
         finish();
         finishAffinity();
