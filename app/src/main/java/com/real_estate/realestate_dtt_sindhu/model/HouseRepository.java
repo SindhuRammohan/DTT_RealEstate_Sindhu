@@ -17,51 +17,45 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class HouseRepository {
-  private ArrayList<DataModel> dataModels = new ArrayList<>();
-  String imageurl = Api.BASE_URL;
-  private MutableLiveData<ArrayList<DataModel>> mutableLiveData = new MutableLiveData<>();
+    private final ArrayList<HouseDataModel> dataModels = new ArrayList<>();
+    private final MutableLiveData<ArrayList<HouseDataModel>> mutableLiveData = new MutableLiveData<>();
 
-  public HouseRepository() {
-  }
+    public MutableLiveData<ArrayList<HouseDataModel>> getMutableLiveData() {
 
-  public MutableLiveData<ArrayList<DataModel>> getMutableLiveData() {
+        Call<ArrayList<HouseDataModel>> call = RetrofitClient.getInstance().getMyApi().getHouseList();
+        call.clone().enqueue(new Callback<ArrayList<HouseDataModel>>() {
+            @Override
+            public void onResponse(@NonNull Call<ArrayList<HouseDataModel>> call, @NonNull Response<ArrayList<HouseDataModel>> response) {
 
-    Call<ArrayList<DataModel>> call = RetrofitClient.getInstance().getMyApi().getHouseList();
-    call.clone().enqueue(new Callback<ArrayList<DataModel>>() {
-      @Override
-      public void onResponse(@NonNull Call<ArrayList<DataModel>> call, @NonNull Response<ArrayList<DataModel>> response) {
+                List<HouseDataModel> houseList = response.body();
+                if (houseList != null) {
+                    for (int i = 0; i < Objects.requireNonNull(houseList).size(); i++) {
 
-        List<DataModel> houseList = response.body();
-        if(houseList != null) {
+                        dataModels.add(new HouseDataModel(
+                                houseList.get(i).getPrice(),
+                                houseList.get(i).getZip(),
+                                houseList.get(i).getCity(),
+                                houseList.get(i).getBedrooms(),
+                                houseList.get(i).getBathroom(),
+                                houseList.get(i).getSizes(),
+                                Api.BASE_URL + houseList.get(i).getPicture_path(),
+                                houseList.get(i).getDescription(),
+                                houseList.get(i).getLat(),
+                                houseList.get(i).getLongi()));
+                        mutableLiveData.setValue(dataModels);
+                        Collections.sort(dataModels, new HouseSortByPrice());
+                    }
 
+                }
 
-          for (int i = 0; i < Objects.requireNonNull(houseList).size(); i++) {
+            }
 
-            dataModels.add(new DataModel(
-                    houseList.get(i).getPrice(),
-                    houseList.get(i).getZip(),
-                    houseList.get(i).getCity(),
-                    houseList.get(i).getBedrooms(),
-                    houseList.get(i).getBathroom(),
-                    houseList.get(i).getSizes(),
-                    imageurl + houseList.get(i).getPicture_path(),
-                    houseList.get(i).getDescription(),
-                    houseList.get(i).getLat(),
-                    houseList.get(i).getLongi()));
-            mutableLiveData.setValue(dataModels);
-            Collections.sort(dataModels, new HouseSortByPrice());
-          }
+            @Override
+            public void onFailure(@NonNull Call<ArrayList<HouseDataModel>> call, @NonNull Throwable t) {
+                mutableLiveData.setValue(null);
+            }
+        });
 
-        }
-
-      }
-
-      @Override
-      public void onFailure(@NonNull Call<ArrayList<DataModel>> call, @NonNull Throwable t) {
-        //handle error or failure cases here
-      }
-    });
-
-    return mutableLiveData;
-  }
+        return mutableLiveData;
+    }
 }

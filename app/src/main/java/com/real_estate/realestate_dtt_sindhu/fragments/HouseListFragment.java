@@ -15,34 +15,37 @@ import android.widget.ImageView;
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import com.real_estate.realestate_dtt_sindhu.model.DataModel;
-import com.real_estate.realestate_dtt_sindhu.services.GPSTracker;
-import com.real_estate.realestate_dtt_sindhu.HouseDetailScreen;
-import com.real_estate.realestate_dtt_sindhu.model.HouseViewModel;
+
+import com.real_estate.realestate_dtt_sindhu.HouseDetailActivity;
 import com.real_estate.realestate_dtt_sindhu.R;
 import com.real_estate.realestate_dtt_sindhu.adapter.CustomAdapter;
+import com.real_estate.realestate_dtt_sindhu.model.HouseDataModel;
+import com.real_estate.realestate_dtt_sindhu.model.HouseViewModel;
+import com.real_estate.realestate_dtt_sindhu.services.GPSTracker;
 import com.real_estate.realestate_dtt_sindhu.services.RecyclerViewEmptySupport;
 
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class HouseListFragment extends Fragment implements CustomAdapter.ItemClickListener{
+public class HouseListFragment extends Fragment implements CustomAdapter.ItemClickListener {
     View rootView;
-    RecyclerViewEmptySupport listView;
-    LinearLayoutCompat emptyText;
-    EditText editText;
-    ImageView search;
-    ImageView close;
-    private CustomAdapter adapter;
+    RecyclerViewEmptySupport recyclerViewHouseList;
+    LinearLayoutCompat emptyView;
+    EditText etSearch;
+    ImageView image_search;
+    ImageView image_close;
     HouseViewModel viewModel;
-    public HouseListFragment() {
-        // Required empty public constructor
-    }
-
+    private CustomAdapter mAdapter;
+    final Observer<ArrayList<HouseDataModel>> userListUpdateObserver = new Observer<ArrayList<HouseDataModel>>() {
+        @Override
+        public void onChanged(ArrayList<HouseDataModel> userArrayList) {
+            mAdapter.setHouseList(userArrayList);
+            mAdapter.setClickListener(HouseListFragment.this);
+        }
+    };
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -51,35 +54,34 @@ public class HouseListFragment extends Fragment implements CustomAdapter.ItemCli
 
         requireActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
-        listView = rootView.findViewById(R.id.simpleListView);
-        emptyText = rootView.findViewById(R.id.emptyview);
+        recyclerViewHouseList = rootView.findViewById(R.id.simpleListView);
+        emptyView = rootView.findViewById(R.id.emptyview);
 
-        listView.setLayoutManager(new LinearLayoutManager(getContext()));
-        listView.setHasFixedSize(true);
-        listView.setEmptyView(emptyText);
+        recyclerViewHouseList.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerViewHouseList.setHasFixedSize(true);
+        recyclerViewHouseList.setEmptyView(emptyView);
 
 
-        viewModel = ViewModelProviders.of(getActivityNonNull()).get(HouseViewModel.class);
+        viewModel = ViewModelProviders.of(requireActivity()).get(HouseViewModel.class);
 
-        adapter = new CustomAdapter();
-        listView.setAdapter(adapter);
+        mAdapter = new CustomAdapter();
+        recyclerViewHouseList.setAdapter(mAdapter);
 
-        viewModel.getUserMutableLiveData().observe(getActivityNonNull(), userListUpdateObserver);
+        viewModel.getUserMutableLiveData().observe(requireActivity(), userListUpdateObserver);
 
-        editText = rootView.findViewById(R.id.search);
-        search = rootView.findViewById(R.id.searchicon);
-        close = rootView.findViewById(R.id.closeicon);
+        etSearch = rootView.findViewById(R.id.search);
+        image_search = rootView.findViewById(R.id.searchicon);
+        image_close = rootView.findViewById(R.id.closeicon);
 
 
         TextWatcher textWatcher = new TextWatcher() {
 
             @Override
             public void onTextChanged(CharSequence s, int st, int b, int c) {
-                String text = editText.getText().toString().toLowerCase(Locale.getDefault());
-                if (adapter != null) {
-                    adapter.getFilter().filter(text);
+                String strSearch = etSearch.getText().toString().toLowerCase(Locale.getDefault());
+                if (mAdapter != null) {
+                    mAdapter.getFilter().filter(strSearch);
                 }
-                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -88,27 +90,19 @@ public class HouseListFragment extends Fragment implements CustomAdapter.ItemCli
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (editText.getText().toString().length() != 0) {
-                    search.setVisibility(View.GONE);
-                    close.setVisibility(View.VISIBLE);
+                if (etSearch.getText().toString().length() != 0) {
+                    image_search.setVisibility(View.GONE);
+                    image_close.setVisibility(View.VISIBLE);
                 } else {
-                    search.setVisibility(View.VISIBLE);
-                    close.setVisibility(View.GONE);
+                    image_search.setVisibility(View.VISIBLE);
+                    image_close.setVisibility(View.GONE);
                 }
-
-
-                adapter.notifyDataSetChanged();
             }
         };
 
-        editText.addTextChangedListener(textWatcher);
-        editText.clearFocus();
-        close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editText.setText("");
-            }
-        });
+        etSearch.addTextChangedListener(textWatcher);
+        etSearch.clearFocus();
+        image_close.setOnClickListener(v -> etSearch.setText(""));
 
         OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
             @Override
@@ -119,64 +113,40 @@ public class HouseListFragment extends Fragment implements CustomAdapter.ItemCli
                 }
             }
         };
-        requireActivity().getOnBackPressedDispatcher().addCallback(getActivityNonNull(), callback);
+        requireActivity().getOnBackPressedDispatcher().addCallback(requireActivity(), callback);
         return rootView;
-
-    }
-
-
-    Observer<ArrayList<DataModel>> userListUpdateObserver = new Observer<ArrayList<DataModel>>() {
-        @Override
-        public void onChanged(ArrayList<DataModel> userArrayList) {
-            adapter.setHouseList(userArrayList);
-            adapter.notifyDataSetChanged();
-            adapter.setClickListener(HouseListFragment.this);
-
-
-        }
-    };
-    protected FragmentActivity getActivityNonNull() {
-        if (super.getActivity() != null) {
-            return super.getActivity();
-        } else {
-
-            throw new RuntimeException("null returned from getActivity()");
-        }
     }
 
     @Override
     public void onItemClick(View view, int position) {
-        String price = ((DataModel) adapter.getItem(position)).getPrice();
-        String img = ((DataModel) adapter.getItem(position)).getPicture_path();
-        String bed = ((DataModel) adapter.getItem(position)).getBedrooms();
-        String bath = ((DataModel) adapter.getItem(position)).getBathroom();
-        String size = ((DataModel) adapter.getItem(position)).getSizes();
-        String description = ((DataModel) adapter.getItem(position)).getDescription();
+        String strPrice = mAdapter.getItem(position).getPrice();
+        String strHouseImg = mAdapter.getItem(position).getPicture_path();
+        String strBed = mAdapter.getItem(position).getBedrooms();
+        String strBath = mAdapter.getItem(position).getBathroom();
+        String strSize = mAdapter.getItem(position).getSizes();
+        String strDescription = mAdapter.getItem(position).getDescription();
+        String strlat = mAdapter.getItem(position).getLat();
+        String strlongi = mAdapter.getItem(position).getLongi();
 
-        String lat = ((DataModel) adapter.getItem(position)).getLat();
-        String longi = ((DataModel) adapter.getItem(position)).getLongi();
-
-        GPSTracker mGPS = new GPSTracker(getContext());
-        double dist = adapter.distance(mGPS.getLatitude(), mGPS.getLongitude(), Double.parseDouble(adapter.getItem(position).getLat()), Double.parseDouble(adapter.getItem(position).getLongi()));
-
-        String distance = String.format(Locale.US, "%.2f", dist);
+        GPSTracker mGps = new GPSTracker(getContext());
+        double dDist = mAdapter.distance(mGps.getLatitude(), mGps.getLongitude(), Double.parseDouble(mAdapter.getItem(position).getLat()), Double.parseDouble(mAdapter.getItem(position).getLongi()));
+        String strDistance = String.format(Locale.US, "%.2f", dDist);
 
 
-        Intent intent = new Intent(getActivity(), HouseDetailScreen.class);
+        final Intent intent = new Intent(getActivity(), HouseDetailActivity.class);
 
-        intent.putExtra("price", price);
-        intent.putExtra("selected_image", img);
-        intent.putExtra("bed", bed);
-        intent.putExtra("bath", bath);
-        intent.putExtra("size", size);
-        intent.putExtra("description", description);
-        intent.putExtra("distance", distance);
-        intent.putExtra("lat", lat);
-        intent.putExtra("longi", longi);
+        intent.putExtra(getResources().getString(R.string.price), strPrice);
+        intent.putExtra(getResources().getString(R.string.selected_image), strHouseImg);
+        intent.putExtra(getResources().getString(R.string.bed), strBed);
+        intent.putExtra(getResources().getString(R.string.bath), strBath);
+        intent.putExtra(getResources().getString(R.string.size), strSize);
+        intent.putExtra(getResources().getString(R.string.description_txt), strDescription);
+        intent.putExtra(getResources().getString(R.string.distance), strDistance);
+        intent.putExtra(getResources().getString(R.string.latitude), strlat);
+        intent.putExtra(getResources().getString(R.string.longitude), strlongi);
 
         startActivity(intent);
-        getActivityNonNull().finish();
-
+        requireActivity().finish();
 
     }
 }

@@ -1,4 +1,5 @@
 package com.real_estate.realestate_dtt_sindhu.services;
+
 import android.content.Context;
 import android.location.Location;
 import android.location.LocationListener;
@@ -7,29 +8,22 @@ import android.os.Bundle;
 
 public class GPSTracker implements LocationListener {
 
+    // The minimum distance to change Updates in meters
+    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 1; // 10 meters
+    // The minimum time between updates in milliseconds
+    private static final long MIN_TIME_BW_UPDATES = 1; // 1 minute
     private final Context mContext;
-
     // flag for GPS status
     public boolean isGPSEnabled = false;
-
-    // flag for network status
-    boolean isNetworkEnabled = false;
-
     // flag for GPS status
     public boolean canGetLocation = false;
-
+    // Declaring a Location Manager
+    protected LocationManager locationManager;
+    // flag for network status
+    boolean isNetworkEnabled = false;
     Location location; // location
     double latitude; // latitude
     double longitude; // longitude
-
-    // The minimum distance to change Updates in meters
-    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 1; // 10 meters
-
-    // The minimum time between updates in milliseconds
-    private static final long MIN_TIME_BW_UPDATES = 1; // 1 minute
-
-    // Declaring a Location Manager
-    protected LocationManager locationManager;
 
     public GPSTracker(Context context) {
         this.mContext = context;
@@ -38,7 +32,6 @@ public class GPSTracker implements LocationListener {
 
     /**
      * Function to get the user's current location
-     *
      */
     public Location getLocation() {
         try {
@@ -58,7 +51,7 @@ public class GPSTracker implements LocationListener {
             } else {
                 this.canGetLocation = true;
                 if (isNetworkEnabled) {
-                    location=null;
+                    location = null;
                     locationManager.requestLocationUpdates(
                             LocationManager.NETWORK_PROVIDER,
                             MIN_TIME_BW_UPDATES,
@@ -74,7 +67,7 @@ public class GPSTracker implements LocationListener {
                 }
                 // if GPS Enabled get lat/long using GPS Services
                 if (isGPSEnabled) {
-                    location=null;
+                    location = null;
                     if (location == null) {
                         locationManager.requestLocationUpdates(
                                 LocationManager.GPS_PROVIDER,
@@ -100,10 +93,9 @@ public class GPSTracker implements LocationListener {
     }
 
 
-
     /**
      * Function to get latitude
-     * */
+     */
     public double getLatitude() {
         if (location != null) {
             latitude = location.getLatitude();
@@ -115,7 +107,7 @@ public class GPSTracker implements LocationListener {
 
     /**
      * Function to get longitude
-     * */
+     */
     public double getLongitude() {
         if (location != null) {
             longitude = location.getLongitude();
@@ -124,7 +116,6 @@ public class GPSTracker implements LocationListener {
         // return longitude
         return longitude;
     }
-
 
 
     @Override

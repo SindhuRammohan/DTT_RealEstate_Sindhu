@@ -2,10 +2,6 @@ package com.real_estate.realestate_dtt_sindhu.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.activity.OnBackPressedCallback;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-
 import android.text.method.LinkMovementMethod;
 import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
@@ -13,46 +9,42 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+
 import com.real_estate.realestate_dtt_sindhu.HouseOverview;
 import com.real_estate.realestate_dtt_sindhu.R;
 
+import java.util.Objects;
+
 public class AboutTabFragment extends Fragment {
-    TextView websitelink;
-    public AboutTabFragment() {
-        // Required empty public constructor
-    }
+    TextView tv_Websites;
 
     @Override
-    public View onCreateView(LayoutInflater inflater , ViewGroup container ,
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.about_tab, container, false);
-        websitelink = rootView.findViewById(R.id.dtt_website);
-        websitelink.setMovementMethod(new ScrollingMovementMethod());
+        tv_Websites = rootView.findViewById(R.id.dtt_website);
+        tv_Websites.setMovementMethod(new ScrollingMovementMethod());
         setupHyperlink();
 
-        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                if(getActivity()!=null) {
+                if (getActivity() != null) {
                     Intent intent = new Intent(getActivity().getApplication(), HouseOverview.class);
                     startActivity(intent);
                 }
             }
         };
 
-        requireActivity().getOnBackPressedDispatcher().addCallback(getActivityNonNull(), callback);
+        requireActivity().getOnBackPressedDispatcher().addCallback(requireActivity(), callback);
         return rootView;
     }
 
     private void setupHyperlink() {
-        websitelink.setMovementMethod(LinkMovementMethod.getInstance());
+        tv_Websites.setMovementMethod(LinkMovementMethod.getInstance());
     }
-    protected FragmentActivity getActivityNonNull() {
-        if (super.getActivity() != null) {
-            return super.getActivity();
-        } else {
-            throw new RuntimeException("null returned from getActivity()");
-        }
-    }
+
 }

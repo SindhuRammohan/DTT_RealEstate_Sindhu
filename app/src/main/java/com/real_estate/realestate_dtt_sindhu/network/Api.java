@@ -1,7 +1,7 @@
 package com.real_estate.realestate_dtt_sindhu.network;
 
 
-import com.real_estate.realestate_dtt_sindhu.model.DataModel;
+import com.real_estate.realestate_dtt_sindhu.model.HouseDataModel;
 
 import java.util.ArrayList;
 
@@ -15,5 +15,5 @@ public interface Api {
 
     @Headers({"Access-Key: 98bww4ezuzfePCYFxJEWyszbUXc7dxRx"})
     @GET("/api/house")
-    Call<ArrayList<DataModel>> getHouseList();
+    Call<ArrayList<HouseDataModel>> getHouseList();
 }

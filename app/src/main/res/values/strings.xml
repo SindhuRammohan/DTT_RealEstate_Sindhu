@@ -23,4 +23,15 @@
 
 
 
+    <string name="price">price</string>
+    <string name="selected_image">selected_image</string>
+    <string name="bed">bed</string>
+    <string name="bath">bath</string>
+    <string name="description_txt">description</string>
+    <string name="size">size</string>
+    <string name="distance">distance</string>
+    <string name="latitude">latitude</string>
+    <string name="longitude">longitude</string>
+
+
 </resources>

@@ -100,7 +100,7 @@
         android:id="@+id/no_of_distanceimage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/ic_layers"
+        android:background="@drawable/ic_location"
         android:layout_marginTop="8dp"
         android:layout_marginLeft="18dp"
         app:layout_constraintBottom_toBottomOf="@+id/layers"

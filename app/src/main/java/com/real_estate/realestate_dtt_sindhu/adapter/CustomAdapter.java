@@ -1,6 +1,7 @@
 package com.real_estate.realestate_dtt_sindhu.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,38 +15,38 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.real_estate.realestate_dtt_sindhu.model.DataModel;
-import com.real_estate.realestate_dtt_sindhu.services.GPSTracker;
 import com.real_estate.realestate_dtt_sindhu.R;
+import com.real_estate.realestate_dtt_sindhu.model.HouseDataModel;
+import com.real_estate.realestate_dtt_sindhu.services.GPSTracker;
 
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.RecyclerViewViewHolder> implements  Filterable {
+public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.RecyclerViewViewHolder> implements Filterable {
 
-    private ArrayList<DataModel> afterSearchHouseList;
-    Context mContext;
-    ArrayList<DataModel> originalHouseList;
-    private FilterByAddress filter;
+    private ArrayList<HouseDataModel> afterSearchHouseList;
+    private ArrayList<HouseDataModel> originalHouseList;
+    private Context mContext;
+    private FilterByAddress mFilter;
     private ItemClickListener mClickListener;
 
     @NonNull
     @Override
     public RecyclerViewViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View rootView = LayoutInflater.from(parent.getContext()).inflate(R.layout.house_list,parent,false);
+        View rootView = LayoutInflater.from(parent.getContext()).inflate(R.layout.house_list, parent, false);
         this.mContext = parent.getContext();
         return new RecyclerViewViewHolder(rootView);
-
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewViewHolder holder, int position) {
 
-        DataModel dataModel = originalHouseList.get(position);
+        HouseDataModel dataModel = originalHouseList.get(position);
         holder.setIsRecyclable(false);
-        StringBuilder address =new StringBuilder(dataModel.getZip());
-        address .append(" ");
-        address .append(dataModel.getCity());
+
+        StringBuilder address = new StringBuilder(dataModel.getZip());
+        address.append(" ");
+        address.append(dataModel.getCity());
 
 
         holder.txtPrice.setText(dataModel.getPrice());
@@ -55,14 +56,13 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.RecyclerVi
         holder.txtsize.setText(dataModel.getSizes());
 
 
-        GPSTracker mGPS = new GPSTracker(mContext);
-        double distance = distance(mGPS.getLatitude(), mGPS.getLongitude(), Double.parseDouble(dataModel.getLat()), Double.parseDouble(dataModel.getLongi()));
-        String distanceStringDecimal = String.format(Locale.US,"%.2f", distance);
-        holder.txtdistance.setText(distanceStringDecimal);
+        GPSTracker mGps = new GPSTracker(mContext);
+        double dDistance = distance(mGps.getLatitude(), mGps.getLongitude(), Double.parseDouble(dataModel.getLat()), Double.parseDouble(dataModel.getLongi()));
+        String strDistance = String.format(Locale.US, "%.2f", dDistance);
+        holder.txtdistance.setText(strDistance);
 
 
-
-        String pic_path = dataModel.getPicture_path();
+        String strPicPath = dataModel.getPicture_path();
         ImageView image = holder.houseImage;
 
 
@@ -70,8 +70,8 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.RecyclerVi
                 .centerCrop()
                 .placeholder(R.mipmap.dtt_banner)
                 .error(R.mipmap.dtt_banner);
-        if(mContext != null) {
-            Glide.with(mContext).load(pic_path).apply(options).into(image);
+        if (mContext != null) {
+            Glide.with(mContext).load(strPicPath).apply(options).into(image);
         }
     }
 
@@ -106,30 +106,39 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.RecyclerVi
         } else {
             return 0;
         }
-
     }
 
-    public void setHouseList(ArrayList<DataModel> houseList) {
+    public void setHouseList(ArrayList<HouseDataModel> houseList) {
         this.originalHouseList = houseList;
         notifyDataSetChanged();
+        Log.e("houseList",""+houseList.size());
 
         this.afterSearchHouseList = new ArrayList<>();
-        this.afterSearchHouseList.addAll(originalHouseList);
         this.afterSearchHouseList = originalHouseList;
-        
+
     }
 
 
-    public DataModel getItem(int id) {
+    public HouseDataModel getItem(int id) {
         return originalHouseList.get(id);
     }
+
     public void setClickListener(ItemClickListener itemClickListener) {
         this.mClickListener = itemClickListener;
     }
+
+    @Override
+    public Filter getFilter() {
+        if (mFilter == null) {
+            mFilter = new FilterByAddress();
+        }
+        return mFilter;
+    }
+
+
     public interface ItemClickListener {
         void onItemClick(View view, int position);
     }
-
 
     public class RecyclerViewViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView txtPrice;
@@ -160,35 +169,23 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.RecyclerVi
         }
     }
 
-
-    @Override
-    public Filter getFilter() {
-        if (filter == null){
-            filter  = new FilterByAddress();
-        }
-        notifyDataSetChanged();
-        return filter;
-    }
-
-
-    private class FilterByAddress extends Filter
-    {
+    private class FilterByAddress extends Filter {
 
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
-            ArrayList<DataModel> filteredItems  = new ArrayList<>();
+            ArrayList<HouseDataModel> filteredItems = new ArrayList<>();
             constraint = constraint.toString().toLowerCase();
             FilterResults results = new FilterResults();
             if (constraint.length() == 0) {
                 filteredItems.addAll(afterSearchHouseList);
             } else {
-                for (final DataModel house  : afterSearchHouseList) {
-                    if (house .getZip().toLowerCase().replaceAll("\\s+","").contains(constraint)) {
+                for (final HouseDataModel house : afterSearchHouseList) {
+                    if (house.getZip().toLowerCase().replaceAll("\\s+", "").contains(constraint)) {
                         filteredItems.add(house);
                     }
                 }
             }
-            results.values = filteredItems  ;
+            results.values = filteredItems;
             results.count = filteredItems.size();
             return results;
         }
@@ -198,7 +195,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.RecyclerVi
         @Override
         protected void publishResults(CharSequence constraint,
                                       FilterResults results) {
-            originalHouseList = (ArrayList<DataModel>)results.values;
+            originalHouseList = (ArrayList<HouseDataModel>) results.values;
             notifyDataSetChanged();
         }
     }
