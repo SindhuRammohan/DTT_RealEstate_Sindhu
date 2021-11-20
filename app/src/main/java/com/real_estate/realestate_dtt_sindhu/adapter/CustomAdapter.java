@@ -110,6 +110,10 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.RecyclerVi
     public void setHouseList(ArrayList<HouseDataModel> houseList) {
         this.originalHouseList = houseList;
         notifyDataSetChanged();
+<<<<<<< HEAD
+=======
+
+>>>>>>> 30d7ddabc941d8db1fb2660622924dd99dc0584a
         this.afterSearchHouseList = new ArrayList<>();
         this.afterSearchHouseList = originalHouseList;
 

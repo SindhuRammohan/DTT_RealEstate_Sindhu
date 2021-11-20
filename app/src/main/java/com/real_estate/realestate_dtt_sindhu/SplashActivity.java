@@ -8,8 +8,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -136,11 +134,7 @@ public class SplashActivity extends Activity {
             getLastLocation();
         }
     }
-    private void checkInternet() {
-        ConnectivityManager cm = (ConnectivityManager)getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo nInfo = cm.getActiveNetworkInfo();
-        boolean connected = nInfo != null && nInfo.isAvailable() && nInfo.isConnected();
-    }
+
     private void CloseApp() {
         finish();
         finishAffinity();
