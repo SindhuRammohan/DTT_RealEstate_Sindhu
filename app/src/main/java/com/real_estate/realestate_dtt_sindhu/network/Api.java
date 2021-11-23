@@ -11,9 +11,8 @@ import retrofit2.http.GET;
 import retrofit2.http.Headers;
 
 public interface Api {
-
     String BASE_URL = Constants.BASE_URL;
-    @Headers({"Access-Key: 98bww4ezuzfePCYFxJEWyszbUXc7dxRx"})
-    @GET("/api/house")
+    @Headers({Constants.KEY_HEADER})
+    @GET(Constants.SUB_URL)
     Call<ArrayList<HouseDataModel>> getHouseList();
 }

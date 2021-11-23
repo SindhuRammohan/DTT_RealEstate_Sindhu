@@ -12,14 +12,14 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.real_estate.realestate_dtt_sindhu.R;
 
-public class HouseOverview extends AppCompatActivity {
+public class HouseOverviewActivity extends AppCompatActivity {
 
-
-    private final BottomNavigationView.OnItemSelectedListener navListener = (BottomNavigationView.OnNavigationItemSelectedListener) item -> {
+    private final BottomNavigationView.OnItemSelectedListener navListener =
+            (BottomNavigationView.OnNavigationItemSelectedListener) item -> {
         Fragment selectedFragment = null;
         switch (item.getItemId()) {
             case R.id.home:
-                Intent intent = new Intent(HouseOverview.this, HouseOverview.class);
+                Intent intent = new Intent(HouseOverviewActivity.this, HouseOverviewActivity.class);
                 startActivity(intent);
                 finish();
                 selectedFragment = new HouseListFragment();
@@ -53,12 +53,10 @@ public class HouseOverview extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.overview_screen);
         getSupportActionBar().hide(); // hide the title bar
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN); //enable full screen
-
         BottomNavigationView bottomNav = findViewById(R.id.bottomNavigation);
         bottomNav.setOnItemSelectedListener(navListener);
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new HouseListFragment()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer,
+                new HouseListFragment()).commit();
 
 
     }

@@ -1,79 +1,128 @@
 package com.real_estate.realestate_dtt_sindhu.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
-public class HouseDataModel {
+public class HouseDataModel implements Parcelable {
     @SerializedName("price")
-    String strPrice;
+    String price;
     @SerializedName("zip")
-    String strZip;
+    String zip;
     @SerializedName("city")
-    String strCity;
+    String city;
     @SerializedName("bedrooms")
-    String strBedrooms;
+    String bedrooms;
     @SerializedName("bathrooms")
-    String strBathrooms;
+    String bathrooms;
     @SerializedName("size")
-    String strSizes;
+    String sizes;
     @SerializedName("image")
-    String strPic_path;
+    String picturePath;
     @SerializedName("latitude")
-    String strLatitude;
+    String latitude;
     @SerializedName("longitude")
-    String strLongitude;
+    String longitude;
     @SerializedName("description")
-    String strDescription;
+    String description;
 
-    public HouseDataModel(String strPrice, String strZip, String strCity, String strBedrooms, String strBathrooms, String strSizes, String strPic_path, String strDescription, String strLatitude, String strLongitude) {
-        this.strPrice = strPrice;
-        this.strZip = strZip;
-        this.strCity = strCity;
-        this.strBedrooms = strBedrooms;
-        this.strBathrooms = strBathrooms;
-        this.strSizes = strSizes;
-        this.strPic_path = strPic_path;
-        this.strDescription = strDescription;
-        this.strLatitude = strLatitude;
-        this.strLongitude = strLongitude;
+    public HouseDataModel(String price, String zip, String city, String bedrooms,
+                          String bathrooms, String sizes, String picturePath,
+                          String description, String latitude, String longitude) {
+        this.price = price;
+        this.zip = zip;
+        this.city = city;
+        this.bedrooms = bedrooms;
+        this.bathrooms = bathrooms;
+        this.sizes = sizes;
+        this.picturePath = picturePath;
+        this.description = description;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
+    protected HouseDataModel(Parcel in) {
+        price = in.readString();
+        zip = in.readString();
+        city = in.readString();
+        bedrooms = in.readString();
+        bathrooms = in.readString();
+        sizes = in.readString();
+        picturePath = in.readString();
+        latitude = in.readString();
+        longitude = in.readString();
+        description = in.readString();
+    }
+
+    public static final Creator<HouseDataModel> CREATOR = new Creator<HouseDataModel>() {
+        @Override
+        public HouseDataModel createFromParcel(Parcel in) {
+            return new HouseDataModel(in);
+        }
+
+        @Override
+        public HouseDataModel[] newArray(int size) {
+            return new HouseDataModel[size];
+        }
+    };
+
     public String getPrice() {
-        return strPrice;
+        return price;
     }
 
     public String getCity() {
-        return strCity;
+        return city;
     }
 
-    public String getLat() {
-        return strLatitude;
+    public String getLatitude() {
+        return latitude;
     }
 
-    public String getLongi() {
-        return strLongitude;
+    public String getLongitude() {
+        return longitude;
     }
 
     public String getDescription() {
-        return strDescription;
+        return description;
     }
 
     public String getZip() {
-        return strZip;
+        return zip;
     }
 
     public String getBedrooms() {
-        return strBedrooms;
+        return bedrooms;
     }
 
     public String getBathroom() {
-        return strBathrooms;
+        return bathrooms;
     }
 
     public String getSizes() {
-        return strSizes;
+        return sizes;
     }
 
-    public String getPicture_path() {
-        return strPic_path;
+    public String getPicturePath() {
+        return picturePath;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(price);
+        parcel.writeString(zip);
+        parcel.writeString(city);
+        parcel.writeString(bedrooms);
+        parcel.writeString(bathrooms);
+        parcel.writeString(sizes);
+        parcel.writeString(picturePath);
+        parcel.writeString(latitude);
+        parcel.writeString(longitude);
+        parcel.writeString(description);
     }
 }

@@ -12,6 +12,7 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.widget.LinearLayoutCompat;
@@ -23,15 +24,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.real_estate.realestate_dtt_sindhu.R;
 import com.real_estate.realestate_dtt_sindhu.adapter.CustomAdapter;
 import com.real_estate.realestate_dtt_sindhu.model.HouseDataModel;
+import com.real_estate.realestate_dtt_sindhu.model.HouseRepository;
 import com.real_estate.realestate_dtt_sindhu.model.HouseViewModel;
+import com.real_estate.realestate_dtt_sindhu.services.Constants;
 import com.real_estate.realestate_dtt_sindhu.services.GPSTracker;
 import com.real_estate.realestate_dtt_sindhu.services.RecyclerViewEmptySupport;
 
 import java.util.ArrayList;
 import java.util.Locale;
-
-import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
 
 public class HouseListFragment extends Fragment implements CustomAdapter.ItemClickListener {
     View rootView;
@@ -39,18 +39,18 @@ public class HouseListFragment extends Fragment implements CustomAdapter.ItemCli
     ProgressBar progressBar;
     LinearLayoutCompat emptyView;
     EditText etSearch;
-    ImageView image_search;
-    ImageView image_close;
+    ImageView imgSearch;
+    ImageView imgClose;
     HouseViewModel viewModel;
-    private CustomAdapter mAdapter;
-    final Observer<ArrayList<HouseDataModel>> userListUpdateObserver = new Observer<ArrayList<HouseDataModel>>() {
+    private CustomAdapter adapter;
+    final Observer<ArrayList<HouseDataModel>> houseListUpdateObserver =
+            new Observer<ArrayList<HouseDataModel>>() {
         @Override
-        public void onChanged(ArrayList<HouseDataModel> userArrayList) {
-            mAdapter.setHouseList(userArrayList);
-            progressBar.setVisibility(GONE);
-            recyclerViewHouseList.setVisibility(VISIBLE);
-            mAdapter.notifyDataSetChanged();
-            mAdapter.setClickListener(HouseListFragment.this);
+        public void onChanged(ArrayList<HouseDataModel> houseArrayList) {
+            adapter.setHouseList(houseArrayList);
+            recyclerViewHouseList.setVisibility(View.VISIBLE);
+            adapter.notifyDataSetChanged();
+            adapter.setClickListener(HouseListFragment.this);
         }
     };
 
@@ -64,23 +64,22 @@ public class HouseListFragment extends Fragment implements CustomAdapter.ItemCli
         emptyView = rootView.findViewById(R.id.emptyView);
         progressBar = rootView.findViewById(R.id.progressBar);
         etSearch = rootView.findViewById(R.id.search);
-        image_search = rootView.findViewById(R.id.searchIcon);
-        image_close = rootView.findViewById(R.id.closeIcon);
+        imgSearch = rootView.findViewById(R.id.searchIcon);
+        imgClose = rootView.findViewById(R.id.closeIcon);
 
         recyclerViewHouseList.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerViewHouseList.setHasFixedSize(true);
         recyclerViewHouseList.setEmptyView(emptyView);
-        progressBar.setVisibility(VISIBLE);
-        recyclerViewHouseList.setVisibility(GONE);
+        recyclerViewHouseList.setVisibility(View.GONE);
 
         viewModel = ViewModelProviders.of(requireActivity()).get(HouseViewModel.class);
-        mAdapter = new CustomAdapter();
-        recyclerViewHouseList.setAdapter(mAdapter);
-        viewModel.getUserMutableLiveData().observe(requireActivity(), userListUpdateObserver);
+        adapter = new CustomAdapter();
+        recyclerViewHouseList.setAdapter(adapter);
+        viewModel.getUserMutableLiveData().observe(requireActivity(), houseListUpdateObserver);
 
         editText();
 
-        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+        OnBackPressedCallback callback = new OnBackPressedCallback(true ) {
             @Override
             public void handleOnBackPressed() {
                 if (getActivity() != null) {
@@ -92,35 +91,39 @@ public class HouseListFragment extends Fragment implements CustomAdapter.ItemCli
         return rootView;
     }
 
+    /**
+     * Receives the text typed in the Edit text
+     * Performs the search during editing the text
+     * Search option will be disabled if the text is empty.
+     */
     private void editText() {
         TextWatcher textWatcher = new TextWatcher() {
         @Override
-        public void onTextChanged(CharSequence s, int st, int b, int c) {
-            String strSearch = etSearch.getText().toString().toLowerCase(Locale.getDefault());
-            if (mAdapter != null) {
-                mAdapter.getFilter().filter(strSearch);
+        public void onTextChanged(CharSequence search, int start, int before, int count) {
+            String searchText = etSearch.getText().toString().toLowerCase(Locale.getDefault());
+            if (adapter != null) {
+                adapter.getFilter().filter(searchText);
             }
         }
 
         @Override
-        public void beforeTextChanged(CharSequence s, int st, int c, int a) {
+        public void beforeTextChanged(CharSequence search, int start, int count, int after) {
         }
 
         @Override
-        public void afterTextChanged(Editable s) {
+        public void afterTextChanged(Editable search) {
             if (etSearch.getText().toString().length() != 0) {
-                image_search.setVisibility(GONE);
-                image_close.setVisibility(VISIBLE);
+                imgSearch.setVisibility(View.GONE);
+                imgClose.setVisibility(View.VISIBLE);
             } else {
-                image_search.setVisibility(VISIBLE);
-                image_close.setVisibility(GONE);
+                imgSearch.setVisibility(View.VISIBLE);
+                imgClose.setVisibility(View.GONE);
             }
         }
     };
-
         etSearch.addTextChangedListener(textWatcher);
         etSearch.clearFocus();
-        image_close.setOnClickListener(v -> etSearch.setText(""));
+        imgClose.setOnClickListener(v -> etSearch.setText(""));
     }
 
     private void closeActivity() {
@@ -130,33 +133,21 @@ public class HouseListFragment extends Fragment implements CustomAdapter.ItemCli
 
     @Override
     public void onItemClick(View view, int position) {
-        String strPrice = mAdapter.currencyFormat(mAdapter.getItem(position).getPrice());
-        String strHouseImg = mAdapter.getItem(position).getPicture_path();
-        String strBed = mAdapter.getItem(position).getBedrooms();
-        String strBath = mAdapter.getItem(position).getBathroom();
-        String strSize = mAdapter.getItem(position).getSizes();
-        String strDescription = mAdapter.getItem(position).getDescription();
-        String strlat = mAdapter.getItem(position).getLat();
-        String strlongi = mAdapter.getItem(position).getLongi();
-
-        GPSTracker mGps = new GPSTracker(getContext());
-        String dDist = mAdapter.distance(mGps.getLatitude(), mGps.getLongitude(), Double.parseDouble(mAdapter.getItem(position).getLat()), Double.parseDouble(mAdapter.getItem(position).getLongi()));
-
 
         final Intent intent = new Intent(getActivity(), HouseDetailActivity.class);
-
-        intent.putExtra(getResources().getString(R.string.price), strPrice);
-        intent.putExtra(getResources().getString(R.string.selected_image), strHouseImg);
-        intent.putExtra(getResources().getString(R.string.bed), strBed);
-        intent.putExtra(getResources().getString(R.string.bath), strBath);
-        intent.putExtra(getResources().getString(R.string.size), strSize);
-        intent.putExtra(getResources().getString(R.string.description_txt), strDescription);
-        intent.putExtra(getResources().getString(R.string.distance), dDist);
-        intent.putExtra(getResources().getString(R.string.latitude), strlat);
-        intent.putExtra(getResources().getString(R.string.longitude), strlongi);
+        intent.putExtra(Constants.KEY, new HouseDataModel(
+                adapter.getItem(position).getPrice(),
+                adapter.getItem(position).getZip(),
+                adapter.getItem(position).getCity(),
+                adapter.getItem(position).getBedrooms(),
+                adapter.getItem(position).getBathroom(),
+                adapter.getItem(position).getSizes(),
+                adapter.getItem(position).getPicturePath(),
+                adapter.getItem(position).getDescription(),
+                adapter.getItem(position).getLatitude(),
+                adapter.getItem(position).getLongitude()));
 
         startActivity(intent);
         requireActivity().finish();
-
     }
 }

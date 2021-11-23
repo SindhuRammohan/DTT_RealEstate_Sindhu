@@ -25,22 +25,25 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.real_estate.realestate_dtt_sindhu.R;
+import com.real_estate.realestate_dtt_sindhu.adapter.CustomAdapter;
+import com.real_estate.realestate_dtt_sindhu.model.HouseDataModel;
+import com.real_estate.realestate_dtt_sindhu.services.Constants;
 import com.real_estate.realestate_dtt_sindhu.services.GPSTracker;
 
 public class HouseDetailActivity extends AppCompatActivity implements GoogleMap.OnMarkerClickListener {
     private GoogleMap googleMap;
-    private String strLatitude;
-    private String strLongitude;
+    private String latitude;
+    private String longitude;
     private TextView txtPrice;
     private TextView txtBedroom;
     private TextView txtBathroom;
     private TextView txtLayers;
     private TextView txtDescription;
     private TextView txtDistance;
-    private ImageView houseImageView;
-    private ImageView back;
-    private String img_url;
-    GPSTracker mGPS;
+    private ImageView imgHouseImageView;
+    private ImageView imgBack;
+    private String imgUrl;
+    GPSTracker gps;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,32 +51,37 @@ public class HouseDetailActivity extends AppCompatActivity implements GoogleMap.
         requestWindowFeature(Window.FEATURE_NO_TITLE); //will hide the title
         getSupportActionBar().hide(); // hide the title bar
         setContentView(R.layout.detail_house);
-        mGPS = new GPSTracker(this);
+        gps = new GPSTracker(this);
         init();
         setHouseDetails();
         loadHouseImage();
         displayMap();
-        back.setOnClickListener(v -> clickBack());
+        imgBack.setOnClickListener(v -> clickBack());
     }
 
+    /**
+     * Recieved the clicked house deatils and set the valued to the view
+     */
     private void setHouseDetails() {
-        Intent i = getIntent();
-        String price = i.getStringExtra(getResources().getString(R.string.price));
-        img_url = i.getStringExtra(getResources().getString(R.string.selected_image));
-        String bed = i.getStringExtra(getResources().getString(R.string.bed));
-        String bath = i.getStringExtra(getResources().getString(R.string.bath));
-        String size = i.getStringExtra(getResources().getString(R.string.size));
-        String descriptions = i.getStringExtra(getResources().getString(R.string.description_txt));
-        String dist = i.getStringExtra(getResources().getString(R.string.distance));
-        strLatitude = i.getStringExtra(getResources().getString(R.string.latitude));
-        strLongitude = i.getStringExtra(getResources().getString(R.string.longitude));
-
-        txtPrice.setText(price);
-        txtBedroom.setText(bed);
-        txtBathroom.setText(bath);
-        txtLayers.setText(size);
-        txtDescription.setText(descriptions);
-        txtDistance.setText(dist);
+        Bundle data = getIntent().getExtras();
+        HouseDataModel houseDetail = (HouseDataModel) data.getParcelable(Constants.KEY);
+        imgUrl = houseDetail.getPicturePath();
+        txtPrice.setText(houseDetail.getPrice());
+        txtBedroom.setText(houseDetail.getBedrooms());
+        txtBathroom.setText(houseDetail.getBathroom());
+        txtLayers.setText(houseDetail.getSizes());
+        txtDescription.setText(houseDetail.getDescription());
+        latitude = houseDetail.getLatitude();
+        longitude = houseDetail.getLongitude();
+        CustomAdapter adapter = new CustomAdapter();
+        GPSTracker mGps = new GPSTracker(this);
+        String distance = adapter.distance(this,
+                mGps.getLatitude(),
+                mGps.getLongitude(),
+                Double.parseDouble(houseDetail.getLatitude()),
+                Double.parseDouble(houseDetail.getLongitude())
+        );
+        txtDistance.setText(distance);
     }
 
     //To load the image
@@ -82,7 +90,7 @@ public class HouseDetailActivity extends AppCompatActivity implements GoogleMap.
                 .centerCrop()
                 .placeholder(R.mipmap.dtt_banner)
                 .error(R.mipmap.dtt_banner);
-        Glide.with(this).load(img_url).apply(options).into(houseImageView);
+        Glide.with(this).load(imgUrl).apply(options).into(imgHouseImageView);
     }
 
     //Page Initialization
@@ -93,8 +101,8 @@ public class HouseDetailActivity extends AppCompatActivity implements GoogleMap.
         txtLayers = findViewById(R.id.layerDetail);
         txtDescription = findViewById(R.id.description);
         txtDistance = findViewById(R.id.distanceDetail);
-        houseImageView = findViewById(R.id.houseImageDetail);
-        back = findViewById(R.id.back);
+        imgHouseImageView = findViewById(R.id.houseImageDetail);
+        imgBack = findViewById(R.id.back);
     }
 
     //To display the map
@@ -117,10 +125,10 @@ public class HouseDetailActivity extends AppCompatActivity implements GoogleMap.
 
                 googleMap.getUiSettings().setMyLocationButtonEnabled(true);
             }
-            if (mGPS.canGetLocation) {
-                mGPS.getLocation();
+            if (gps.canGetLocation) {
+                gps.getLocation();
             }
-            LatLng currentLocation = new LatLng(mGPS.getLatitude(), mGPS.getLongitude());
+            LatLng currentLocation = new LatLng(gps.getLatitude(), gps.getLongitude());
             BitmapDescriptor defaultMarker =
                     BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED);
             googleMap.addMarker(new MarkerOptions()
@@ -146,11 +154,12 @@ public class HouseDetailActivity extends AppCompatActivity implements GoogleMap.
         return false;
     }
 
+    // View the path on the system map, when the marker is clicked
     private void viewMap() {
         String mapurlfrom = getResources().getString(R.string.mapurlfrom);
         String mapurlto = getResources().getString(R.string.mapurlto);
         String coma = getResources().getString(R.string.coma);
-        String mappathfromandto = mapurlfrom + mGPS.getLatitude() + coma + mGPS.getLongitude() + mapurlto + strLatitude + coma + strLongitude;
+        String mappathfromandto = mapurlfrom + gps.getLatitude() + coma + gps.getLongitude() + mapurlto + latitude + coma + longitude;
 
         Intent intent = new Intent(Intent.ACTION_VIEW,
                 Uri.parse(mappathfromandto));
@@ -158,7 +167,7 @@ public class HouseDetailActivity extends AppCompatActivity implements GoogleMap.
     }
 
     private void clickBack() {
-        Intent intent = new Intent(HouseDetailActivity.this, HouseOverview.class);
+        Intent intent = new Intent(HouseDetailActivity.this, HouseOverviewActivity.class);
         startActivity(intent);
         finish();
     }

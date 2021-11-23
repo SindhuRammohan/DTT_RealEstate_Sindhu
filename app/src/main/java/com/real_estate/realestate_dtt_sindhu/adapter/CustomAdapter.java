@@ -24,19 +24,21 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.RecyclerViewViewHolder> implements Filterable {
+public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.RecyclerViewViewHolder>
+        implements Filterable {
 
     private ArrayList<HouseDataModel> afterSearchHouseList;
     private ArrayList<HouseDataModel> originalHouseList;
-    private Context mContext;
-    private FilterByAddress mFilter;
-    private ItemClickListener mClickListener;
+    private Context context;
+    private FilterByAddress filterByAddress;
+    private ItemClickListener clickListener;
 
     @NonNull
     @Override
     public RecyclerViewViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View rootView = LayoutInflater.from(parent.getContext()).inflate(R.layout.house_list, parent, false);
-        this.mContext = parent.getContext();
+        View rootView = LayoutInflater.from(parent.getContext()).inflate(R.layout.house_list,
+                parent, false);
+        this.context = parent.getContext();
         return new RecyclerViewViewHolder(rootView);
     }
 
@@ -48,7 +50,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.RecyclerVi
 
         //Address contains zip code and city name
         StringBuilder address = new StringBuilder(dataModel.getZip());
-        address.append(mContext.getResources().getString(R.string.space));
+        address.append(context.getResources().getString(R.string.space));
         address.append(dataModel.getCity());
 
         holder.txtPrice.setText(currencyFormat(dataModel.getPrice()));
@@ -57,20 +59,22 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.RecyclerVi
         holder.txtbath.setText(dataModel.getBathroom());
         holder.txtsize.setText(dataModel.getSizes());
 
-        GPSTracker mGps = new GPSTracker(mContext);
-        String dDistance = distance(mGps.getLatitude(), mGps.getLongitude(), Double.parseDouble(dataModel.getLat()), Double.parseDouble(dataModel.getLongi()));
-        holder.txtdistance.setText(dDistance);
+        GPSTracker mGps = new GPSTracker(context);
+        String distance = distance(context,mGps.getLatitude(), mGps.getLongitude(),
+                Double.parseDouble(dataModel.getLatitude()), Double.parseDouble(dataModel.getLongitude()));
+        holder.txtdistance.setText(distance);
 
-        String strPicPath = dataModel.getPicture_path();
-        ImageView image = holder.houseImage;
+        String picPath = dataModel.getPicturePath();
+        ImageView image = holder.imgHouseImage;
 
         RequestOptions options = new RequestOptions()
-                .transform(new RoundedCorners((int) mContext.getResources().getDimension(R.dimen.radius_26)))
-                .apply(new RequestOptions().override((int) mContext.getResources().getDimension(R.dimen.size_100), (int) mContext.getResources().getDimension(R.dimen.size_200)))
+                .transform(new RoundedCorners((int) context.getResources().getDimension(R.dimen.radius_26)))
+                .apply(new RequestOptions().override((int) context.getResources().getDimension(R.dimen.size_100),
+                        (int) context.getResources().getDimension(R.dimen.size_200)))
                 .placeholder(R.mipmap.dtt_banner)
                 .error(R.mipmap.dtt_banner);
-        if (mContext != null) {
-            Glide.with(mContext).load(strPicPath).apply(options).into(image);
+        if (context != null) {
+            Glide.with(context).load(picPath).apply(options).into(image);
         }
     }
 
@@ -85,7 +89,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.RecyclerVi
         return price;
     }
 
-    public String distance(double lat1, double lon1, double lat2, double lon2) {
+    public String distance(Context context,double lat1, double lon1, double lat2, double lon2) {
         double theta = lon1 - lon2;
         double dist = Math.sin(deg2rad(lat1))
                 * Math.sin(deg2rad(lat2))
@@ -98,8 +102,8 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.RecyclerVi
         dist = dist * Constants.minutes * Constants.miles;
         dist = (dist * Constants.kilometer);
         //Applying 2 decimal values
-        String strDistance = String.format(Locale.US, "%.2f", dist);
-        return strDistance + mContext.getResources().getString(R.string.kilometer);
+        String distance = String.format(Locale.US, "%.2f", dist);
+        return distance + context.getResources().getString(R.string.kilometer);
     }
 
     private double deg2rad(double deg) {
@@ -131,15 +135,15 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.RecyclerVi
     }
 
     public void setClickListener(ItemClickListener itemClickListener) {
-        this.mClickListener = itemClickListener;
+        this.clickListener = itemClickListener;
     }
 
     @Override
     public Filter getFilter() {
-        if (mFilter == null) {
-            mFilter = new FilterByAddress();
+        if (filterByAddress == null) {
+            filterByAddress = new FilterByAddress();
         }
-        return mFilter;
+        return filterByAddress;
     }
 
     public interface ItemClickListener {
@@ -153,7 +157,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.RecyclerVi
         TextView txtbath;
         TextView txtsize;
         TextView txtdistance;
-        ImageView houseImage;
+        ImageView imgHouseImage;
 
         RecyclerViewViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -162,7 +166,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.RecyclerVi
             txtBedroom = itemView.findViewById(R.id.bedroom);
             txtbath = itemView.findViewById(R.id.bathroom);
             txtsize = itemView.findViewById(R.id.layers);
-            houseImage = itemView.findViewById(R.id.houseImage);
+            imgHouseImage = itemView.findViewById(R.id.houseImage);
             txtdistance = itemView.findViewById(R.id.distance);
 
             itemView.setOnClickListener(this);
@@ -170,7 +174,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.RecyclerVi
 
         @Override
         public void onClick(View view) {
-            if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
+            if (clickListener != null) clickListener.onItemClick(view, getAdapterPosition());
         }
     }
 

@@ -36,10 +36,10 @@ public class HouseRepository {
                                 houseList.get(i).getBedrooms(),
                                 houseList.get(i).getBathroom(),
                                 houseList.get(i).getSizes(),
-                                Api.BASE_URL + houseList.get(i).getPicture_path(),
+                                Api.BASE_URL + houseList.get(i).getPicturePath(),
                                 houseList.get(i).getDescription(),
-                                houseList.get(i).getLat(),
-                                houseList.get(i).getLongi()));
+                                houseList.get(i).getLatitude(),
+                                houseList.get(i).getLongitude()));
                         mutableLiveData.setValue(dataModels);
                         Collections.sort(dataModels, new HouseSortByPrice());
                     }

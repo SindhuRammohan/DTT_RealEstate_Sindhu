@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/space_15"
         android:layout_marginTop="@dimen/space_10"
-        android:textAppearance="@style/TextAppearance.AppCompat.title3"
+        android:textAppearance="@style/TextAppearance.AppCompat.title2"
         app:layout_constraintStart_toEndOf="@+id/houseImage"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -63,8 +63,9 @@
                     android:id="@+id/recycleviewBedroomImage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/space_15"
+                    android:layout_marginTop="@dimen/space_18"
                     android:background="@drawable/ic_bed"
+                    android:backgroundTint="@color/medium"
                     app:layout_constraintStart_toEndOf="@+id/scrollRecycleviewContainer"
                     app:layout_constraintStart_toStartOf="@+id/scrollRecycleviewContainer"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -74,8 +75,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/space_18"
-                    android:layout_marginTop="@dimen/space_15"
                     android:background="@drawable/ic_bath"
+                    android:backgroundTint="@color/medium"
                     app:layout_constraintBottom_toBottomOf="@+id/bedroom"
                     app:layout_constraintStart_toEndOf="@+id/bedroom" />
 
@@ -84,8 +85,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/space_18"
-                    android:layout_marginTop="@dimen/space_15"
                     android:background="@drawable/ic_layers"
+                    android:backgroundTint="@color/medium"
                     app:layout_constraintBottom_toBottomOf="@+id/bathroom"
                     app:layout_constraintStart_toEndOf="@+id/bathroom" />
 
@@ -94,8 +95,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/space_18"
-                    android:layout_marginTop="@dimen/space_15"
                     android:background="@drawable/ic_location"
+                    android:backgroundTint="@color/medium"
                     app:layout_constraintBottom_toBottomOf="@+id/layers"
                     app:layout_constraintStart_toEndOf="@+id/layers" />
 
@@ -106,6 +107,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/space_8"
                     android:layout_marginTop="@dimen/space_15"
+                    android:paddingBottom="@dimen/space_3"
+                    android:textAppearance="@style/TextAppearance.AppCompat.hint"
                     app:layout_constraintBottom_toBottomOf="@+id/recycleviewBedroomImage"
                     app:layout_constraintStart_toEndOf="@+id/recycleviewBedroomImage" />
 
@@ -114,6 +117,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/space_8"
+                    android:paddingBottom="@dimen/space_3"
+                    android:textAppearance="@style/TextAppearance.AppCompat.hint"
                     app:layout_constraintBottom_toBottomOf="@+id/reycleviewLayersImage"
                     app:layout_constraintStart_toEndOf="@+id/reycleviewLayersImage" />
 
@@ -123,6 +128,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/space_8"
+                    android:paddingBottom="@dimen/space_3"
+                    android:textAppearance="@style/TextAppearance.AppCompat.hint"
                     app:layout_constraintBottom_toBottomOf="@+id/recycleBathroomImage"
                     app:layout_constraintStart_toEndOf="@+id/recycleBathroomImage" />
 
@@ -131,6 +138,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/space_8"
+                    android:paddingBottom="@dimen/space_3"
+                    android:textAppearance="@style/TextAppearance.AppCompat.hint"
                     app:layout_constraintBottom_toBottomOf="@+id/recycleviewDistanceimage"
                     app:layout_constraintStart_toEndOf="@+id/recycleviewDistanceimage" />
 

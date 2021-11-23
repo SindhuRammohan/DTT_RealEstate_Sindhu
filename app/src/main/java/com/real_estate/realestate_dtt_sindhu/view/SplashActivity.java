@@ -23,19 +23,19 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.real_estate.realestate_dtt_sindhu.R;
+import com.real_estate.realestate_dtt_sindhu.services.Constants;
 
 
 public class SplashActivity extends Activity {
 
     Handler handler;
-    FusedLocationProviderClient mFusedLocationClient;
-    int PERMISSION_ID = 44;
+    FusedLocationProviderClient fusedLocationClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash_screen);
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
         // method to get the location
         getLastLocation();
@@ -45,20 +45,14 @@ public class SplashActivity extends Activity {
     private void getLastLocation() {
         // check if permissions are given
         if (checkPermissions()) {
-
             // check if location is enabled
             if (isLocationEnabled()) {
-
-                // getting last
-                // location from
-                // FusedLocationClient
-                // object
-                mFusedLocationClient.getLastLocation().addOnCompleteListener(task -> {
+                fusedLocationClient.getLastLocation().addOnCompleteListener(task -> {
                     Location location = task.getResult();
                     if (location == null) {
                         requestNewLocationData();
                     } else {
-                        LaunchApp();
+                        launchApp();
                     }
                 });
             } else {
@@ -66,8 +60,7 @@ public class SplashActivity extends Activity {
                 startActivity(intent);
             }
         } else {
-            // if permissions aren't available,
-            // request for permissions
+            // if permissions aren't available, request for permissions
             requestPermissions();
         }
     }
@@ -76,58 +69,60 @@ public class SplashActivity extends Activity {
     private void requestNewLocationData() {
 
         // Initializing LocationRequest
-        // object with appropriate methods
         LocationRequest mLocationRequest = new LocationRequest();
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         mLocationRequest.setInterval(5);
         mLocationRequest.setFastestInterval(0);
         mLocationRequest.setNumUpdates(1);
 
-        // setting LocationRequest
-        // on FusedLocationClient
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        fusedLocationClient.requestLocationUpdates(mLocationRequest, locationCallback, Looper.myLooper());
     }
 
     // method to check for permissions
     private boolean checkPermissions() {
-        return ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+        return ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
     }
 
     // method to request for permissions
     private void requestPermissions() {
         ActivityCompat.requestPermissions(this, new String[]{
                 Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_ID);
+                Manifest.permission.ACCESS_FINE_LOCATION}, Constants.PERMISSION_ID);
     }
 
-    // method to check
-    // if location is enabled
+    // method to check if location is enabled
     private boolean isLocationEnabled() {
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
+                locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
     }
 
     // If everything is alright then
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        if (requestCode == PERMISSION_ID) {
+        if (requestCode == Constants.PERMISSION_ID) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 getLastLocation();
             } else {
                 // On Deny
-                CloseApp();
-                Toast.makeText(getApplicationContext(), getResources().getString(R.string.deny_permission), Toast.LENGTH_SHORT).show();
+                closeApp();
+                Toast.makeText(getApplicationContext(),
+                        getResources().getString(R.string.deny_permission), Toast.LENGTH_SHORT).show();
             }
         }
     }
-    private final LocationCallback mLocationCallback = new LocationCallback() {
+    private final LocationCallback locationCallback = new LocationCallback() {
 
         @Override
         public void onLocationResult(@NonNull LocationResult locationResult) {
-            LaunchApp();
+            launchApp();
         }
     };
     @Override
@@ -138,15 +133,15 @@ public class SplashActivity extends Activity {
         }
     }
 
-    private void CloseApp() {
+    private void closeApp() {
         finish();
         finishAffinity();
     }
 
-    private void LaunchApp() {
+    private void launchApp() {
         handler = new Handler();
         handler.postDelayed(() -> {
-            Intent intent = new Intent(SplashActivity.this, HouseOverview.class);
+            Intent intent = new Intent(SplashActivity.this, HouseOverviewActivity.class);
             startActivity(intent);
             finish();
         }, 3000);

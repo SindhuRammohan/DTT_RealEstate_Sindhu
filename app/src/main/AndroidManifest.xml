@@ -45,7 +45,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".view.HouseOverview"
+            android:name=".view.HouseOverviewActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:exported="true">
         </activity>
