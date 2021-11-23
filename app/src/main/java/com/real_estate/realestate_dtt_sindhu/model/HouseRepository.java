@@ -21,12 +21,10 @@ public class HouseRepository {
     private final MutableLiveData<ArrayList<HouseDataModel>> mutableLiveData = new MutableLiveData<>();
 
     public MutableLiveData<ArrayList<HouseDataModel>> getMutableLiveData() {
-
         Call<ArrayList<HouseDataModel>> call = RetrofitClient.getInstance().getMyApi().getHouseList();
         call.clone().enqueue(new Callback<ArrayList<HouseDataModel>>() {
             @Override
             public void onResponse(@NonNull Call<ArrayList<HouseDataModel>> call, @NonNull Response<ArrayList<HouseDataModel>> response) {
-
                 List<HouseDataModel> houseList = response.body();
                 if (houseList != null) {
                     for (int i = 0; i < Objects.requireNonNull(houseList).size(); i++) {
@@ -45,9 +43,7 @@ public class HouseRepository {
                         mutableLiveData.setValue(dataModels);
                         Collections.sort(dataModels, new HouseSortByPrice());
                     }
-
                 }
-
             }
 
             @Override
@@ -55,7 +51,6 @@ public class HouseRepository {
                 mutableLiveData.setValue(null);
             }
         });
-
         return mutableLiveData;
     }
 }

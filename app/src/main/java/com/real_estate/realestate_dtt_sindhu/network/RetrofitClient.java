@@ -15,7 +15,6 @@ public class RetrofitClient {
         myApi = retrofit.create(Api.class);
     }
 
-
     public static synchronized RetrofitClient getInstance() {
         if (instance == null) {
             instance = new RetrofitClient();
@@ -26,6 +25,4 @@ public class RetrofitClient {
     public Api getMyApi() {
         return myApi;
     }
-
-
 }

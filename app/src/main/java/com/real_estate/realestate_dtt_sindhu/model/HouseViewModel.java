@@ -11,15 +11,12 @@ import java.util.ArrayList;
 public class HouseViewModel extends AndroidViewModel {
     private final HouseRepository houseRepository;
 
-
     public HouseViewModel(@NonNull Application application) {
         super(application);
         houseRepository = new HouseRepository();
-
     }
 
     public LiveData<ArrayList<HouseDataModel>> getUserMutableLiveData() {
         return houseRepository.getMutableLiveData();
     }
-
 }

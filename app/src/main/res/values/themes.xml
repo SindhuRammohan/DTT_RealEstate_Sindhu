@@ -13,36 +13,36 @@
     </style>
     <style name="TextAppearance.AppCompat.title1" parent="TextAppearance.MaterialComponents.Body2">
         <item name="fontFamily">@font/bold</item>
-        <item name="android:textSize">18dp</item>
+        <item name="android:textSize">18sp</item>
     </style>
     <style name="TextAppearance.AppCompat.title2" parent="TextAppearance.MaterialComponents.Body2">
         <item name="fontFamily">@font/bold</item>
-        <item name="android:textSize">16dp</item>
+        <item name="android:textSize">16sp</item>
 
     </style>
     <style name="TextAppearance.AppCompat.title3" parent="TextAppearance.MaterialComponents.Body2">
         <item name="fontFamily">@font/medium</item>
-        <item name="android:textSize">16dp</item>
+        <item name="android:textSize">16sp</item>
     </style>
     <style name="TextAppearance.AppCompat.Body" parent="TextAppearance.MaterialComponents.Body2">
         <item name="fontFamily">@font/book</item>
-        <item name="android:textSize">12dp</item>
+        <item name="android:textSize">12sp</item>
     </style>
     <style name="TextAppearance.AppCompat.input" parent="TextAppearance.MaterialComponents.Body2">
         <item name="fontFamily">@font/light</item>
-        <item name="android:textSize">12dp</item>
+        <item name="android:textSize">12sp</item>
         <item name="android:letterSpacing">0.0178571429</item>
     </style>
     <style name="TextAppearance.AppCompat.hint" parent="TextAppearance.MaterialComponents.Body2">
         <item name="fontFamily">@font/book</item>
-        <item name="android:textSize">12dp</item>
+        <item name="android:textSize">12sp</item>
     </style>
     <style name="TextAppearance.AppCompat.subtitle" parent="TextAppearance.MaterialComponents.Body2">
         <item name="fontFamily">@font/book</item>
-        <item name="android:textSize">10dp</item>
+        <item name="android:textSize">10sp</item>
     </style>
     <style name="TextAppearance.AppCompat.detail" parent="TextAppearance.MaterialComponents.Body2">
         <item name="fontFamily">@font/book</item>
-        <item name="android:textSize">12dp</item>
+        <item name="android:textSize">12sp</item>
     </style>
 </resources>

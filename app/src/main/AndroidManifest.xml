@@ -37,7 +37,7 @@
         <meta-data android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".SplashActivity">
+        <activity android:name=".view.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -45,12 +45,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".HouseOverview"
+            android:name=".view.HouseOverview"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:exported="true">
         </activity>
         <activity
-            android:name=".HouseDetailActivity"
+            android:name=".view.HouseDetailActivity"
             android:exported="true">
         </activity>
     </application>

@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    android:background="@color/red">
+    android:background="@color/red"
+    android:gravity="center">
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/logo_id"
+        android:id="@+id/logoId"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerInParent="true"
-        android:scaleType="centerInside"
         android:adjustViewBounds="true"
-        android:src="@drawable/ic_dtt"/>
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_dtt" />
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,111 +1,132 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/container"
+    android:id="@+id/oveviewContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/light_gray"
-    android:paddingTop="40dp"
-    android:paddingStart="20dp"
-    android:paddingEnd="20dp">
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/header_title"
-        android:layout_width="0dp"
+    android:paddingStart="@dimen/space_20"
+    android:paddingTop="@dimen/space_40"
+    android:paddingEnd="@dimen/space_20">
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/container"
-        app:layout_constraintTop_toTopOf="parent"
-        android:textAppearance="@style/TextAppearance.AppCompat.title1"
-        android:text="@string/dtt_realestate" />
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatEditText
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/container"
-        app:layout_constraintTop_toBottomOf="@+id/header_title"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:layout_marginBottom="30dp"
-        android:padding="12dp"
-        android:nextFocusUp="@id/search"
-        android:nextFocusLeft="@id/search"
         android:id="@+id/search"
+        android:layout_width="@dimen/no_space"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_30"
+        android:layout_marginBottom="@dimen/space_30"
+        android:autofillHints="@string/search_for_home"
         android:background="@drawable/search_box_style"
-        android:singleLine="true"
+        android:gravity="center_vertical"
         android:hint="@string/search_for_home"
         android:imeOptions="actionSearch"
         android:inputType="text"
-        android:gravity="center_vertical"
-        android:autofillHints="@string/search_for_home" />
+        android:nextFocusLeft="@id/search"
+        android:nextFocusUp="@id/search"
+        android:paddingLeft="@dimen/space_12"
+        android:paddingTop="@dimen/space_12"
+        android:paddingRight="@dimen/space_100"
+        android:paddingBottom="@dimen/space_12"
+        android:singleLine="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/oveviewContainer"
+        app:layout_constraintTop_toBottomOf="@+id/overviewTitle" />
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/searchicon"
-        android:layout_width="0dp"
+        android:id="@+id/closeIcon"
+        android:layout_width="@dimen/no_space"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="@dimen/space_30"
+        android:layout_marginEnd="@dimen/space_18"
         android:background="@color/dark_gray"
-        android:padding="12dp"
-        android:layout_marginLeft="-50dp"
-        android:src="@drawable/ic_search"
+        android:padding="@dimen/space_12"
+        android:src="@drawable/ic_close"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/search"
-        app:layout_constraintTop_toBottomOf="@+id/header_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintTop_toBottomOf="@+id/overviewTitle"
         app:layout_constraintVertical_bias="0.0" />
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/search"
-        app:layout_constraintTop_toBottomOf="@+id/header_title"
-        app:layout_constraintVertical_bias="0.0"
-        android:layout_width="0dp"
+        android:id="@+id/searchIcon"
+        android:layout_width="@dimen/no_space"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:padding="12dp"
-        android:layout_marginLeft="-50dp"
-        android:id="@+id/closeicon"
+        android:layout_marginTop="@dimen/space_30"
+        android:layout_marginEnd="@dimen/space_18"
         android:background="@color/dark_gray"
-        android:src="@drawable/ic_close"/>
+        android:paddingLeft="@dimen/space_12"
+        android:paddingTop="@dimen/space_12"
+        android:paddingRight="@dimen/space_12"
+        android:paddingBottom="@dimen/space_12"
+        android:src="@drawable/ic_search"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintTop_toBottomOf="@+id/overviewTitle"
+        app:layout_constraintVertical_bias="0.0" />
 
-    <com.real_estate.realestate_dtt_sindhu.services.RecyclerViewEmptySupport
-        android:id="@+id/simpleListView"
-        android:layout_width="match_parent"
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/overviewTitle"
+        android:layout_width="@dimen/no_space"
         android:layout_height="wrap_content"
-        android:paddingBottom="180dp"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/container"
-        app:layout_constraintTop_toBottomOf="@+id/search"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="10.0sp"
-        android:scrollbars="none"
-        android:footerDividersEnabled="false" />
-
+        android:text="@string/dtt_realestate"
+        android:textAppearance="@style/TextAppearance.AppCompat.title1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/oveviewContainer"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/emptyview"
+        android:id="@+id/emptyView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
         android:orientation="vertical">
+
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/simpleImageView"
+            android:id="@+id/emptyImageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:scaleType="centerCrop"
-            android:layout_marginRight="40dp"
-            android:layout_marginLeft="40dp"
             android:layout_gravity="center_vertical|center_horizontal"
+            android:layout_marginLeft="@dimen/space_40"
+            android:layout_marginRight="@dimen/space_40"
             android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
             android:src="@mipmap/search_state_empty" />
+
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/empty"
-            android:gravity="center"
-            android:layout_marginTop="30dp"
+            android:id="@+id/emptyText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat.subtitle"
-            android:text="@string/nosearch" />
+            android:layout_marginTop="@dimen/space_30"
+            android:gravity="center"
+            android:text="@string/nosearch"
+            android:textAppearance="@style/TextAppearance.AppCompat.subtitle" />
+
 
     </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+    <com.real_estate.realestate_dtt_sindhu.services.RecyclerViewEmptySupport
+        android:id="@+id/recycleviewHouseList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:divider="@android:color/transparent"
+        android:scrollbars="none"
+        app:layout_constrainedHeight="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/oveviewContainer"
+        app:layout_constraintTop_toBottomOf="@+id/search" />
 </androidx.constraintlayout.widget.ConstraintLayout>

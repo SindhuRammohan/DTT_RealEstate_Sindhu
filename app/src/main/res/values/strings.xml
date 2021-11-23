@@ -3,13 +3,12 @@
     <string name="google_maps_key">AIzaSyDGzYqKTTyVrD6PKQ6bPhhVyNxulIJf-a4</string>
     <string name="app_name">RealEstate DTT Sindhu</string>
     <string name="about">ABOUT</string>
-    <string name="dad">Design and Development</string>
+    <string name="design_and_development">Design and Development</string>
     <string name="by_dtt">by DTT</string>
     <string name="dtt_realestate">DTT REAL ESTATE</string>
     <string name="search_for_home">Search for a home</string>
     <string name="description">Description</string>
     <string name="location">Location</string>
-    <string name="currency">$ %1$s</string>
     <string name="nosearch">No results found! \n Perhaps try another search?</string>
     <string name="dtt_website"><a href="http://www.d-tt.nl">d-tt.nl</a></string>
     <string name="about_text">
@@ -20,8 +19,9 @@
     <string name="mapurlto">&amp;daddr=</string>
     <string name="llat">,</string>
     <string name="llongi">&amp;daddr=</string>
-
-
+    <string name="kilometer">km</string>
+    <string name="deny_permission">The Location permission is Denied</string>
+    <string name="space">&#032;</string>
 
     <string name="price">price</string>
     <string name="selected_image">selected_image</string>

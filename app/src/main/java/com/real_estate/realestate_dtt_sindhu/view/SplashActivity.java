@@ -1,4 +1,4 @@
-package com.real_estate.realestate_dtt_sindhu;
+package com.real_estate.realestate_dtt_sindhu.view;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.Settings;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
@@ -21,6 +22,7 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.real_estate.realestate_dtt_sindhu.R;
 
 
 public class SplashActivity extends Activity {
@@ -117,6 +119,7 @@ public class SplashActivity extends Activity {
             } else {
                 // On Deny
                 CloseApp();
+                Toast.makeText(getApplicationContext(), getResources().getString(R.string.deny_permission), Toast.LENGTH_SHORT).show();
             }
         }
     }

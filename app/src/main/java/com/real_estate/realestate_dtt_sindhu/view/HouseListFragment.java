@@ -1,4 +1,4 @@
-package com.real_estate.realestate_dtt_sindhu.fragments;
+package com.real_estate.realestate_dtt_sindhu.view;
 
 
 import android.content.Intent;
@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.widget.LinearLayoutCompat;
@@ -19,7 +20,6 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.real_estate.realestate_dtt_sindhu.HouseDetailActivity;
 import com.real_estate.realestate_dtt_sindhu.R;
 import com.real_estate.realestate_dtt_sindhu.adapter.CustomAdapter;
 import com.real_estate.realestate_dtt_sindhu.model.HouseDataModel;
@@ -30,9 +30,13 @@ import com.real_estate.realestate_dtt_sindhu.services.RecyclerViewEmptySupport;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+
 public class HouseListFragment extends Fragment implements CustomAdapter.ItemClickListener {
     View rootView;
     RecyclerViewEmptySupport recyclerViewHouseList;
+    ProgressBar progressBar;
     LinearLayoutCompat emptyView;
     EditText etSearch;
     ImageView image_search;
@@ -43,6 +47,9 @@ public class HouseListFragment extends Fragment implements CustomAdapter.ItemCli
         @Override
         public void onChanged(ArrayList<HouseDataModel> userArrayList) {
             mAdapter.setHouseList(userArrayList);
+            progressBar.setVisibility(GONE);
+            recyclerViewHouseList.setVisibility(VISIBLE);
+            mAdapter.notifyDataSetChanged();
             mAdapter.setClickListener(HouseListFragment.this);
         }
     };
@@ -51,65 +58,33 @@ public class HouseListFragment extends Fragment implements CustomAdapter.ItemCli
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.houselist_tab, container, false);
-
         requireActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        recyclerViewHouseList = rootView.findViewById(R.id.recycleviewHouseList);
 
-        recyclerViewHouseList = rootView.findViewById(R.id.simpleListView);
-        emptyView = rootView.findViewById(R.id.emptyview);
+        emptyView = rootView.findViewById(R.id.emptyView);
+        progressBar = rootView.findViewById(R.id.progressBar);
+        etSearch = rootView.findViewById(R.id.search);
+        image_search = rootView.findViewById(R.id.searchIcon);
+        image_close = rootView.findViewById(R.id.closeIcon);
 
         recyclerViewHouseList.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerViewHouseList.setHasFixedSize(true);
         recyclerViewHouseList.setEmptyView(emptyView);
-
+        progressBar.setVisibility(VISIBLE);
+        recyclerViewHouseList.setVisibility(GONE);
 
         viewModel = ViewModelProviders.of(requireActivity()).get(HouseViewModel.class);
-
         mAdapter = new CustomAdapter();
         recyclerViewHouseList.setAdapter(mAdapter);
-
         viewModel.getUserMutableLiveData().observe(requireActivity(), userListUpdateObserver);
 
-        etSearch = rootView.findViewById(R.id.search);
-        image_search = rootView.findViewById(R.id.searchicon);
-        image_close = rootView.findViewById(R.id.closeicon);
-
-
-        TextWatcher textWatcher = new TextWatcher() {
-
-            @Override
-            public void onTextChanged(CharSequence s, int st, int b, int c) {
-                String strSearch = etSearch.getText().toString().toLowerCase(Locale.getDefault());
-                if (mAdapter != null) {
-                    mAdapter.getFilter().filter(strSearch);
-                }
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int st, int c, int a) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (etSearch.getText().toString().length() != 0) {
-                    image_search.setVisibility(View.GONE);
-                    image_close.setVisibility(View.VISIBLE);
-                } else {
-                    image_search.setVisibility(View.VISIBLE);
-                    image_close.setVisibility(View.GONE);
-                }
-            }
-        };
-
-        etSearch.addTextChangedListener(textWatcher);
-        etSearch.clearFocus();
-        image_close.setOnClickListener(v -> etSearch.setText(""));
+        editText();
 
         OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
             @Override
             public void handleOnBackPressed() {
                 if (getActivity() != null) {
-                    getActivity().finish();
-                    getActivity().finishAffinity();
+                    closeActivity();
                 }
             }
         };
@@ -117,9 +92,45 @@ public class HouseListFragment extends Fragment implements CustomAdapter.ItemCli
         return rootView;
     }
 
+    private void editText() {
+        TextWatcher textWatcher = new TextWatcher() {
+        @Override
+        public void onTextChanged(CharSequence s, int st, int b, int c) {
+            String strSearch = etSearch.getText().toString().toLowerCase(Locale.getDefault());
+            if (mAdapter != null) {
+                mAdapter.getFilter().filter(strSearch);
+            }
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int st, int c, int a) {
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            if (etSearch.getText().toString().length() != 0) {
+                image_search.setVisibility(GONE);
+                image_close.setVisibility(VISIBLE);
+            } else {
+                image_search.setVisibility(VISIBLE);
+                image_close.setVisibility(GONE);
+            }
+        }
+    };
+
+        etSearch.addTextChangedListener(textWatcher);
+        etSearch.clearFocus();
+        image_close.setOnClickListener(v -> etSearch.setText(""));
+    }
+
+    private void closeActivity() {
+        getActivity().finish();
+        getActivity().finishAffinity();
+    }
+
     @Override
     public void onItemClick(View view, int position) {
-        String strPrice = mAdapter.getItem(position).getPrice();
+        String strPrice = mAdapter.currencyFormat(mAdapter.getItem(position).getPrice());
         String strHouseImg = mAdapter.getItem(position).getPicture_path();
         String strBed = mAdapter.getItem(position).getBedrooms();
         String strBath = mAdapter.getItem(position).getBathroom();
@@ -129,8 +140,7 @@ public class HouseListFragment extends Fragment implements CustomAdapter.ItemCli
         String strlongi = mAdapter.getItem(position).getLongi();
 
         GPSTracker mGps = new GPSTracker(getContext());
-        double dDist = mAdapter.distance(mGps.getLatitude(), mGps.getLongitude(), Double.parseDouble(mAdapter.getItem(position).getLat()), Double.parseDouble(mAdapter.getItem(position).getLongi()));
-        String strDistance = String.format(Locale.US, "%.2f", dDist);
+        String dDist = mAdapter.distance(mGps.getLatitude(), mGps.getLongitude(), Double.parseDouble(mAdapter.getItem(position).getLat()), Double.parseDouble(mAdapter.getItem(position).getLongi()));
 
 
         final Intent intent = new Intent(getActivity(), HouseDetailActivity.class);
@@ -141,7 +151,7 @@ public class HouseListFragment extends Fragment implements CustomAdapter.ItemCli
         intent.putExtra(getResources().getString(R.string.bath), strBath);
         intent.putExtra(getResources().getString(R.string.size), strSize);
         intent.putExtra(getResources().getString(R.string.description_txt), strDescription);
-        intent.putExtra(getResources().getString(R.string.distance), strDistance);
+        intent.putExtra(getResources().getString(R.string.distance), dDist);
         intent.putExtra(getResources().getString(R.string.latitude), strlat);
         intent.putExtra(getResources().getString(R.string.longitude), strlongi);
 

@@ -1,9 +1,8 @@
-package com.real_estate.realestate_dtt_sindhu;
+package com.real_estate.realestate_dtt_sindhu.view;
 
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.view.Window;
 import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
@@ -11,8 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.real_estate.realestate_dtt_sindhu.fragments.AboutTabFragment;
-import com.real_estate.realestate_dtt_sindhu.fragments.HouseListFragment;
+import com.real_estate.realestate_dtt_sindhu.R;
 
 public class HouseOverview extends AppCompatActivity {
 
@@ -34,7 +32,7 @@ public class HouseOverview extends AppCompatActivity {
         assert selectedFragment != null;
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.fragment_container, selectedFragment)
+                .replace(R.id.fragmentContainer, selectedFragment)
                 .commit();
         return true;
     };
@@ -58,9 +56,9 @@ public class HouseOverview extends AppCompatActivity {
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN); //enable full screen
 
-        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+        BottomNavigationView bottomNav = findViewById(R.id.bottomNavigation);
         bottomNav.setOnItemSelectedListener(navListener);
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HouseListFragment()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new HouseListFragment()).commit();
 
 
     }

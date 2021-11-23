@@ -5,6 +5,6 @@
     <!-- use this for a background colour -->
     <solid android:color="#FFF" />
 
-    <corners android:radius="8dp" />
+    <corners android:radius="18dp" />
     <stroke android:width="2dip" android:color="@color/white" />
 </shape>

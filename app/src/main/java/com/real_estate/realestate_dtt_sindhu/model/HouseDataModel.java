@@ -2,7 +2,6 @@ package com.real_estate.realestate_dtt_sindhu.model;
 
 import com.google.gson.annotations.SerializedName;
 
-
 public class HouseDataModel {
     @SerializedName("price")
     String strPrice;
@@ -24,7 +23,6 @@ public class HouseDataModel {
     String strLongitude;
     @SerializedName("description")
     String strDescription;
-
 
     public HouseDataModel(String strPrice, String strZip, String strCity, String strBedrooms, String strBathrooms, String strSizes, String strPic_path, String strDescription, String strLatitude, String strLongitude) {
         this.strPrice = strPrice;
