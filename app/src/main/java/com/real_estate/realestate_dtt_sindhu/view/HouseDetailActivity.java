@@ -30,7 +30,8 @@ import com.real_estate.realestate_dtt_sindhu.model.HouseDataModel;
 import com.real_estate.realestate_dtt_sindhu.services.Constants;
 import com.real_estate.realestate_dtt_sindhu.services.GPSTracker;
 
-public class HouseDetailActivity extends AppCompatActivity implements GoogleMap.OnMarkerClickListener {
+public class HouseDetailActivity extends AppCompatActivity {
+    GPSTracker gps;
     private GoogleMap googleMap;
     private String latitude;
     private String longitude;
@@ -43,7 +44,6 @@ public class HouseDetailActivity extends AppCompatActivity implements GoogleMap.
     private ImageView imgHouseImageView;
     private ImageView imgBack;
     private String imgUrl;
-    GPSTracker gps;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -66,7 +66,7 @@ public class HouseDetailActivity extends AppCompatActivity implements GoogleMap.
         Bundle data = getIntent().getExtras();
         HouseDataModel houseDetail = (HouseDataModel) data.getParcelable(Constants.KEY);
         imgUrl = houseDetail.getPicturePath();
-        txtPrice.setText(houseDetail.getPrice());
+        txtPrice.setText(CustomAdapter.currencyFormat(houseDetail.getPrice()));
         txtBedroom.setText(houseDetail.getBedrooms());
         txtBathroom.setText(houseDetail.getBathroom());
         txtLayers.setText(houseDetail.getSizes());
@@ -138,21 +138,23 @@ public class HouseDetailActivity extends AppCompatActivity implements GoogleMap.
             googleMap.setOnMapClickListener(arg0 -> {
                 viewMap();
             });
-
+            // adding on click listener to marker of google maps.
+            mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                @Override
+                public boolean onMarkerClick(Marker marker) {
+                    // on marker click we are getting the title of our marker
+                    // which is clicked and displaying it in a toast message.
+                    if (marker.equals(googleMap)) {
+                        viewMap();
+                    }
+                    return false;
+                }
+            });
             CameraPosition cameraPosition = new CameraPosition.Builder().target(currentLocation).zoom(12).build();
             googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
         });
     }
 
-    @Override
-    public boolean onMarkerClick(final Marker marker) {
-
-        if (marker.equals(googleMap))
-        {
-            viewMap();
-        }
-        return false;
-    }
 
     // View the path on the system map, when the marker is clicked
     private void viewMap() {

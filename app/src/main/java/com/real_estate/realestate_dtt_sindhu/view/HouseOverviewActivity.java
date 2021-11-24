@@ -3,7 +3,6 @@ package com.real_estate.realestate_dtt_sindhu.view;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,28 +13,29 @@ import com.real_estate.realestate_dtt_sindhu.R;
 
 public class HouseOverviewActivity extends AppCompatActivity {
 
+
     private final BottomNavigationView.OnItemSelectedListener navListener =
             (BottomNavigationView.OnNavigationItemSelectedListener) item -> {
-        Fragment selectedFragment = null;
-        switch (item.getItemId()) {
-            case R.id.home:
-                Intent intent = new Intent(HouseOverviewActivity.this, HouseOverviewActivity.class);
-                startActivity(intent);
-                finish();
-                selectedFragment = new HouseListFragment();
-                break;
-            case R.id.info:
-                selectedFragment = new AboutTabFragment();
-                break;
-        }
+                Fragment selectedFragment = null;
+                switch (item.getItemId()) {
+                    case R.id.home:
+                        Intent intent = new Intent(HouseOverviewActivity.this, HouseOverviewActivity.class);
+                        startActivity(intent);
+                        finish();
+                        selectedFragment = new HouseListFragment();
+                        break;
+                    case R.id.info:
+                        selectedFragment = new AboutTabFragment();
+                        break;
+                }
 
-        assert selectedFragment != null;
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragmentContainer, selectedFragment)
-                .commit();
-        return true;
-    };
+                assert selectedFragment != null;
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragmentContainer, selectedFragment)
+                        .commit();
+                return true;
+            };
 
     @Override
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
@@ -57,7 +57,5 @@ public class HouseOverviewActivity extends AppCompatActivity {
         bottomNav.setOnItemSelectedListener(navListener);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer,
                 new HouseListFragment()).commit();
-
-
     }
 }

@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/recycleContainer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/space_5"
+    android:layout_marginTop="@dimen/space_18"
+    android:background="@drawable/list_box_style">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/houseImage"
+        android:layout_width="@dimen/space_100"
+        android:layout_height="@dimen/space_100"
+        android:layout_marginEnd="@dimen/space_3"
+        android:padding="@dimen/space_10"
+        android:scaleType="fitXY"
+        app:layout_constraintStart_toEndOf="@+id/recycleContainer"
+        app:layout_constraintStart_toStartOf="@+id/recycleContainer"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/price"
+        android:layout_width="@dimen/no_space"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/space_15"
+        android:layout_marginTop="@dimen/space_10"
+        android:textAppearance="@style/TextAppearance.AppCompat.title2"
+        app:layout_constraintStart_toEndOf="@+id/houseImage"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/location"
+        android:layout_width="@dimen/no_space"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_3"
+        android:textAppearance="@style/TextAppearance.AppCompat.subtitle"
+        app:layout_constraintStart_toStartOf="@+id/price"
+        app:layout_constraintTop_toBottomOf="@+id/price" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="@dimen/no_space"
+        android:layout_height="match_parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline30"
+        app:layout_constraintStart_toStartOf="@+id/location"
+        app:layout_constraintTop_toBottomOf="@+id/location">
+
+        <HorizontalScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:scrollbars="none"
+            app:layout_constraintStart_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/scrollRecycleviewContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                app:layout_constrainedWidth="true">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/recycleviewBedroomImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_18"
+                    android:background="@drawable/ic_bed"
+                    android:backgroundTint="@color/medium"
+                    app:layout_constraintStart_toEndOf="@+id/scrollRecycleviewContainer"
+                    app:layout_constraintStart_toStartOf="@+id/scrollRecycleviewContainer"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/recycleBathroomImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/space_18"
+                    android:background="@drawable/ic_bath"
+                    android:backgroundTint="@color/medium"
+                    app:layout_constraintBottom_toBottomOf="@+id/bedroom"
+                    app:layout_constraintStart_toEndOf="@+id/bedroom" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/reycleviewLayersImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/space_18"
+                    android:background="@drawable/ic_layers"
+                    android:backgroundTint="@color/medium"
+                    app:layout_constraintBottom_toBottomOf="@+id/bathroom"
+                    app:layout_constraintStart_toEndOf="@+id/bathroom" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/recycleviewDistanceimage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/space_18"
+                    android:background="@drawable/ic_location"
+                    android:backgroundTint="@color/medium"
+                    app:layout_constraintBottom_toBottomOf="@+id/layers"
+                    app:layout_constraintStart_toEndOf="@+id/layers" />
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/bedroom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/space_8"
+                    android:layout_marginTop="@dimen/space_15"
+                    android:paddingBottom="@dimen/space_3"
+                    android:textAppearance="@style/TextAppearance.AppCompat.hint"
+                    app:layout_constraintBottom_toBottomOf="@+id/recycleviewBedroomImage"
+                    app:layout_constraintStart_toEndOf="@+id/recycleviewBedroomImage" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/layers"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/space_8"
+                    android:paddingBottom="@dimen/space_3"
+                    android:textAppearance="@style/TextAppearance.AppCompat.hint"
+                    app:layout_constraintBottom_toBottomOf="@+id/reycleviewLayersImage"
+                    app:layout_constraintStart_toEndOf="@+id/reycleviewLayersImage" />
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/bathroom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/space_8"
+                    android:paddingBottom="@dimen/space_3"
+                    android:textAppearance="@style/TextAppearance.AppCompat.hint"
+                    app:layout_constraintBottom_toBottomOf="@+id/recycleBathroomImage"
+                    app:layout_constraintStart_toEndOf="@+id/recycleBathroomImage" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/distance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/space_8"
+                    android:paddingBottom="@dimen/space_3"
+                    android:textAppearance="@style/TextAppearance.AppCompat.hint"
+                    app:layout_constraintBottom_toBottomOf="@+id/recycleviewDistanceimage"
+                    app:layout_constraintStart_toEndOf="@+id/recycleviewDistanceimage" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </HorizontalScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline30"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="1" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

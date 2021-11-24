@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light_gray"
+    android:paddingBottom="@dimen/space_10">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/aboutTabContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/space_10"
+        android:paddingEnd="@dimen/space_10">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/dttBanner"
+            android:layout_width="@dimen/space_100"
+            android:layout_height="@dimen/space_60"
+            android:layout_marginStart="@dimen/space_15"
+            android:layout_marginEnd="@dimen/space_3"
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside"
+            android:src="@mipmap/dtt_banner"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/aboutTabContainer"
+            app:layout_constraintStart_toStartOf="@+id/aboutTabContainer"
+            app:layout_constraintTop_toBottomOf="@+id/designAndDevelopment" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txtAbout"
+            android:layout_width="@dimen/no_space"
+            android:layout_height="match_parent"
+            android:paddingLeft="@dimen/space_15"
+            android:paddingBottom="@dimen/space_30"
+            android:text="@string/about_text"
+            android:textAppearance="@style/TextAppearance.AppCompat.input"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@+id/aboutTabContainer"
+            app:layout_constraintTop_toBottomOf="@+id/about" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/designAndDevelopment"
+            android:layout_width="@dimen/no_space"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/space_15"
+            android:paddingBottom="@dimen/space_10"
+            android:text="@string/design_and_development"
+            android:textAppearance="@style/TextAppearance.AppCompat.title1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@+id/aboutTabContainer"
+            app:layout_constraintTop_toBottomOf="@+id/txtAbout" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/about"
+            android:layout_width="@dimen/no_space"
+            android:layout_height="match_parent"
+            android:paddingLeft="@dimen/space_15"
+            android:paddingTop="@dimen/space_30"
+            android:paddingBottom="@dimen/space_30"
+            android:text="@string/about"
+            android:textAppearance="@style/TextAppearance.AppCompat.title1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/aboutTabContainer"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/byDtt"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/space_18"
+            android:layout_marginTop="@dimen/space_15"
+            android:layout_marginBottom="@dimen/space_18"
+            android:text="@string/by_dtt"
+            android:textAppearance="@style/TextAppearance.AppCompat.subtitle"
+            app:layout_constraintStart_toEndOf="@+id/dttBanner"
+            app:layout_constraintTop_toBottomOf="@+id/designAndDevelopment" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/dttWebsite"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/space_18"
+            android:text="@string/dtt_website"
+            android:textAppearance="@style/TextAppearance.AppCompat.hint"
+            android:textColorLink="@color/blue"
+            app:layout_constraintStart_toEndOf="@+id/dttBanner"
+            app:layout_constraintTop_toBottomOf="@+id/byDtt" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

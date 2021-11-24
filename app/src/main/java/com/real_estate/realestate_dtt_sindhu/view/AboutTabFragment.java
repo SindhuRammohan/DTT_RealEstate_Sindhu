@@ -46,7 +46,7 @@ public class AboutTabFragment extends Fragment {
     private void setupHyperlink() {
         Spannable s = new SpannableString(txtWebsites.getText());
         URLSpan[] spans = s.getSpans(0, s.length(), URLSpan.class);
-        for (URLSpan span: spans) {
+        for (URLSpan span : spans) {
             int start = s.getSpanStart(span);
             int end = s.getSpanEnd(span);
             s.removeSpan(span);
@@ -62,7 +62,9 @@ public class AboutTabFragment extends Fragment {
         public URLSpanNoUnderline(String url) {
             super(url);
         }
-        @Override public void updateDrawState(TextPaint ds) {
+
+        @Override
+        public void updateDrawState(TextPaint ds) {
             super.updateDrawState(ds);
             ds.setUnderlineText(false);
         }

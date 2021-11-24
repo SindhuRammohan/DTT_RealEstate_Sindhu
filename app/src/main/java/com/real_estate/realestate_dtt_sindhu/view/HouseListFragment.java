@@ -12,7 +12,6 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.widget.LinearLayoutCompat;
@@ -24,10 +23,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.real_estate.realestate_dtt_sindhu.R;
 import com.real_estate.realestate_dtt_sindhu.adapter.CustomAdapter;
 import com.real_estate.realestate_dtt_sindhu.model.HouseDataModel;
-import com.real_estate.realestate_dtt_sindhu.model.HouseRepository;
 import com.real_estate.realestate_dtt_sindhu.model.HouseViewModel;
 import com.real_estate.realestate_dtt_sindhu.services.Constants;
-import com.real_estate.realestate_dtt_sindhu.services.GPSTracker;
 import com.real_estate.realestate_dtt_sindhu.services.RecyclerViewEmptySupport;
 
 import java.util.ArrayList;
@@ -45,20 +42,23 @@ public class HouseListFragment extends Fragment implements CustomAdapter.ItemCli
     private CustomAdapter adapter;
     final Observer<ArrayList<HouseDataModel>> houseListUpdateObserver =
             new Observer<ArrayList<HouseDataModel>>() {
-        @Override
-        public void onChanged(ArrayList<HouseDataModel> houseArrayList) {
-            adapter.setHouseList(houseArrayList);
-            recyclerViewHouseList.setVisibility(View.VISIBLE);
-            adapter.notifyDataSetChanged();
-            adapter.setClickListener(HouseListFragment.this);
-        }
-    };
+                @Override
+                public void onChanged(ArrayList<HouseDataModel> houseArrayList) {
+                    adapter.setHouseList(houseArrayList);
+                    recyclerViewHouseList.setVisibility(View.VISIBLE);
+                    emptyView.setVisibility(View.GONE);
+                    progressBar.setVisibility(View.GONE);
+                    adapter.notifyDataSetChanged();
+                    recyclerViewHouseList.setEmptyView(emptyView);
+                    adapter.setClickListener(HouseListFragment.this);
+                }
+            };
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.houselist_tab, container, false);
-        requireActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        requireActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         recyclerViewHouseList = rootView.findViewById(R.id.recycleviewHouseList);
 
         emptyView = rootView.findViewById(R.id.emptyView);
@@ -69,8 +69,10 @@ public class HouseListFragment extends Fragment implements CustomAdapter.ItemCli
 
         recyclerViewHouseList.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerViewHouseList.setHasFixedSize(true);
-        recyclerViewHouseList.setEmptyView(emptyView);
+
         recyclerViewHouseList.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
+        emptyView.setVisibility(View.GONE);
 
         viewModel = ViewModelProviders.of(requireActivity()).get(HouseViewModel.class);
         adapter = new CustomAdapter();
@@ -79,7 +81,7 @@ public class HouseListFragment extends Fragment implements CustomAdapter.ItemCli
 
         editText();
 
-        OnBackPressedCallback callback = new OnBackPressedCallback(true ) {
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
                 if (getActivity() != null) {
@@ -98,29 +100,29 @@ public class HouseListFragment extends Fragment implements CustomAdapter.ItemCli
      */
     private void editText() {
         TextWatcher textWatcher = new TextWatcher() {
-        @Override
-        public void onTextChanged(CharSequence search, int start, int before, int count) {
-            String searchText = etSearch.getText().toString().toLowerCase(Locale.getDefault());
-            if (adapter != null) {
-                adapter.getFilter().filter(searchText);
+            @Override
+            public void onTextChanged(CharSequence search, int start, int before, int count) {
+                String searchText = etSearch.getText().toString().toLowerCase(Locale.getDefault());
+                if (adapter != null) {
+                    adapter.getFilter().filter(searchText);
+                }
             }
-        }
 
-        @Override
-        public void beforeTextChanged(CharSequence search, int start, int count, int after) {
-        }
-
-        @Override
-        public void afterTextChanged(Editable search) {
-            if (etSearch.getText().toString().length() != 0) {
-                imgSearch.setVisibility(View.GONE);
-                imgClose.setVisibility(View.VISIBLE);
-            } else {
-                imgSearch.setVisibility(View.VISIBLE);
-                imgClose.setVisibility(View.GONE);
+            @Override
+            public void beforeTextChanged(CharSequence search, int start, int count, int after) {
             }
-        }
-    };
+
+            @Override
+            public void afterTextChanged(Editable search) {
+                if (etSearch.getText().toString().length() != 0) {
+                    imgSearch.setVisibility(View.GONE);
+                    imgClose.setVisibility(View.VISIBLE);
+                } else {
+                    imgSearch.setVisibility(View.VISIBLE);
+                    imgClose.setVisibility(View.GONE);
+                }
+            }
+        };
         etSearch.addTextChangedListener(textWatcher);
         etSearch.clearFocus();
         imgClose.setOnClickListener(v -> etSearch.setText(""));

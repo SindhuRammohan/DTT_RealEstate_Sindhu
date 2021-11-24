@@ -29,6 +29,13 @@ import com.real_estate.realestate_dtt_sindhu.services.Constants;
 public class SplashActivity extends Activity {
 
     Handler handler;
+    private final LocationCallback locationCallback = new LocationCallback() {
+
+        @Override
+        public void onLocationResult(@NonNull LocationResult locationResult) {
+            launchApp();
+        }
+    };
     FusedLocationProviderClient fusedLocationClient;
 
     @Override
@@ -118,13 +125,7 @@ public class SplashActivity extends Activity {
             }
         }
     }
-    private final LocationCallback locationCallback = new LocationCallback() {
 
-        @Override
-        public void onLocationResult(@NonNull LocationResult locationResult) {
-            launchApp();
-        }
-    };
     @Override
     public void onResume() {
         super.onResume();

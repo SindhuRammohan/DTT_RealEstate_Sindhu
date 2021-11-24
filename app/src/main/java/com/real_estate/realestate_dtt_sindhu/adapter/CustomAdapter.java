@@ -78,7 +78,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.RecyclerVi
         }
     }
 
-    public String currencyFormat(String price) {
+    public static String currencyFormat(String price) {
         double money = Double.parseDouble(price);
         NumberFormat nf = NumberFormat.getCurrencyInstance(Locale.US);
         //checking for decimal values. if there is no decimal values, remove 0 at the end after decimal
